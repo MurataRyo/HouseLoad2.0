@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class Utility : MonoBehaviour
 {
@@ -51,6 +52,34 @@ public class Utility : MonoBehaviour
         Warp
     }
     #endregion
+
+    public static MapId GetMapId(ObjectId objectId)
+    {
+        for (int i = 0; i < Enum.GetValues(typeof(MapId)).Length; i++)
+        {
+            if (objectId.ToString() == Enum.GetName(typeof(MapId), i))
+            {
+                return (MapId)i;
+            }
+        }
+
+        Debug.Log("指定されたマップIDが存在しません");
+        return 0;
+    }
+
+    public static ObjectId GetObjectId(MapId mapId)
+    {
+        for (int i = 0; i < Enum.GetValues(typeof(ObjectId)).Length; i++)
+        {
+            if (mapId.ToString() == Enum.GetName(typeof(ObjectId), i))
+            {
+                return (ObjectId)i;
+            }
+        }
+
+        Debug.Log("指定されたオブジェクトが存在しません");
+        return 0;
+    }
 }
 
 public class GetPath
