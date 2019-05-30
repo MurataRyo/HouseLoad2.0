@@ -5,13 +5,10 @@ using System;
 
 public class StageCreateTask : MonoBehaviour
 {
-    GameObject[] objects;
+    public static GameObject[] objects;
 
     public void MapDataToCreateStage(string[] str1)
     {
-        if(objects == null)
-
-
         //str1→階層ごとのデータ
         for (int y = 0; y < str1.Length; y++)
         {
@@ -36,13 +33,23 @@ public class StageCreateTask : MonoBehaviour
         }
     }
 
+    //オブジェクトの保存
     private GameObject[] ObjectsLoad()
     {
-        for(int i = 0;i < Enum.GetValues((Type)Utility.ObjectId))
+        int objectNum = Enum.GetValues(typeof(Utility.ObjectId)).Length;
+        GameObject[] loadObjects = new GameObject[objectNum];
+        for (int i = 0; i < objectNum; i++)
+        {
+            string objectName = Enum.GetName(typeof(Utility.ObjectId), i);
+            loadObjects[i] = Resources.Load<GameObject>(GetPath.StageObject + "/" + objectName);
+        }
+
+        return loadObjects;
     }
 
     public void CreateObject(int y, int z, int x, int objectId, int customId)
     {
-
+        if (objects == null)
+            ObjectsLoad();
     }
 }

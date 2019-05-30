@@ -52,3 +52,10 @@ public class Utility : MonoBehaviour
     }
     #endregion
 }
+
+public class GetPath
+{
+    public static string Prefab = "Prefab";
+    public static string StageObject = Prefab + "/StageObject";
+
+}
