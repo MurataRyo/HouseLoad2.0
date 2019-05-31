@@ -6,9 +6,9 @@ using System;
 public class StageCreateTask : MonoBehaviour
 {
     public static GameObject[] objects;
-    public const int Y_Scale = 3;
-    public const int Z_Scale = 1;
-    public const int X_Scale = 1;
+    public const int Y_Scale = 3;       //Y軸のブロック同士の間隔
+    public const int Z_Scale = 1;       //Z軸のブロック同士の間隔
+    public const int X_Scale = 1;       //X軸のブロック同士の間隔
 
     void Start()
     {
@@ -73,6 +73,7 @@ public class StageCreateTask : MonoBehaviour
         }
     }
 
+    //オブジェクトの生成
     public void CreateObject(int yPos, int zPos, int xPos, int objectId, int customId, SpecialObject Special, List<MapObject> mapObjects)
     {
         if (objects == null)
@@ -105,7 +106,6 @@ public class StageCreateTask : MonoBehaviour
             case (int)Utility.ObjectId.Warp:
                 WarpObject warpObject = new WarpObject(obj, objectId, pos, customId);
                 mapObjects.Add(warpObject);
-                WarpCustom(obj, customId);
 
                 obj.GetComponent<Warp>().number = customId;
                 break;
@@ -116,11 +116,6 @@ public class StageCreateTask : MonoBehaviour
     private void AngleCustom(GameObject obj, int customId)
     {
         obj.transform.eulerAngles = new Vector3(obj.transform.eulerAngles.x, obj.transform.eulerAngles.y + customId * 90f, obj.transform.eulerAngles.z);
-    }
-
-    private void WarpCustom(GameObject obj, int customId)
-    {
-
     }
     #endregion
 
@@ -147,8 +142,7 @@ public class SpecialObject
     public int[] ThisUnder;     //そのオブジェクトの位置がしたかどうか
     public int[] CustomObject;  //特殊な設定があるかどうか
     public int[] Kinematic;     //MapObjectsにいれないもの
-
-    //下にブロックを置くもの
+    
     public SpecialObject()
     {
         InUnder = new int[] {

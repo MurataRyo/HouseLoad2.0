@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class GameTask : MonoBehaviour
 {
-    public List<MapObject> mapObjects;
-    public int[][][] stageData;
+    public List<MapObject> mapObjects;  //マップのオブジェクト(動く可能性のある物のみ)
+    public int[][][] stageData;         //ステージのデータを更新する左から y z x
     // Start is called before the first frame update
     void Start()
     {
