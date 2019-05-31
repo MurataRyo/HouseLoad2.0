@@ -5,28 +5,35 @@ using UnityEngine;
 public class PlayerTask : MonoBehaviour
 {
     PlayerMove playerMove;
+    public ControllerTask controllerTask;
+    public GameObject mainCamera;
+    public GameTask gameTask;
     // Start is called before the first frame update
     void Awake()
     {
         playerMove = gameObject.AddComponent<PlayerMove>();
+        gameTask = Utility.GetGameTask();
+    }
+
+    void Start()
+    {
+        controllerTask = Utility.GetTaskObject().GetComponent<ControllerTask>();
+        mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
     }
 
     // Update is called once per frame
     void Update()
     {
+        transform.position = playerMove.NextPos();
 
+        if(Input.GetKeyDown(KeyCode.K))
+        {
+            Vector3Int[] vec3 = Utility.PositionToData(transform.position, 0.3f);
+            foreach (Vector3Int i in vec3)
+            {
+                Debug.Log(i);
+            }
+        }
+        
     }
-
-    public Vector3Int NowPos()
-    {
-        int y = Mathf.RoundToInt(transform.position.y) - 1;
-        y /= StageCreateTask.Y_Scale;
-
-        int z = -Mathf.RoundToInt(transform.position.z);
-
-        int x = Mathf.RoundToInt(transform.position.x);
-
-        return new Vector3Int(y, z, x);
-    }
-
 }

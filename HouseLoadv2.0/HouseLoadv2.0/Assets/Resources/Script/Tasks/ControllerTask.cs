@@ -15,7 +15,7 @@ public class ControllerTask : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        JoyUpdate();
     }
 
     void JoyUpdate()
@@ -31,19 +31,20 @@ public class ControllerTask : MonoBehaviour
 
     void KyeboardUpdate()
     {
-        float x = 0;
-        float y = 0;
+        Vector2 axis = Vector2.zero;
 
         if (Input.GetKey(KeyCode.W))
-            y++;
+            axis.y++;
 
         if (Input.GetKey(KeyCode.S))
-            y--;
+            axis.y--;
 
         if (Input.GetKey(KeyCode.D))
-            x++;
+            axis.x++;
 
         if (Input.GetKey(KeyCode.A))
-            x--;
+            axis.x--;
+
+        joyKey = axis;
     }
 }

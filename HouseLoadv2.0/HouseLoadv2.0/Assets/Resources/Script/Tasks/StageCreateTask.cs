@@ -7,8 +7,7 @@ public class StageCreateTask : MonoBehaviour
 {
     public static GameObject[] objects;
     public const int Y_Scale = 3;       //Y軸のブロック同士の間隔
-    public const int Z_Scale = 1;       //Z軸のブロック同士の間隔
-    public const int X_Scale = 1;       //X軸のブロック同士の間隔
+    public const int ZX_Scale = 1;       //Z軸のブロック同士の間隔
 
     void Start()
     {
@@ -16,10 +15,10 @@ public class StageCreateTask : MonoBehaviour
     }
 
     //パスからの生成
-    public void MapDataCreate(string path, List<MapObject> mapObjects,ref int[][][] mapData)
+    public void MapDataCreate(string path, List<MapObject> mapObjects, ref int[][][] mapData)
     {
         TextAsset text = Resources.Load<TextAsset>(path);
-        MapDataToCreateStage(text.text, mapObjects,ref mapData);
+        MapDataToCreateStage(text.text, mapObjects, ref mapData);
     }
 
     public void MapDataToCreateStage(string str0, List<MapObject> mapObjects, ref int[][][] mapData)
@@ -58,15 +57,15 @@ public class StageCreateTask : MonoBehaviour
                     //地上に置くオブジェクトならtrue
                     if (Array.IndexOf(Special.ThisUnder, mapId) == -1)
                     {
-                        CreateObject((y * Y_Scale) + 1, -z * Z_Scale, x * X_Scale, objectId, customId, Special, mapObjects);
+                        CreateObject((y * Y_Scale) + 1, -z * ZX_Scale, x * ZX_Scale, objectId, customId, Special, mapObjects);
                         //オブジェクトの下にブロックを置くものならtrue
                         if (Array.IndexOf(Special.InUnder, mapId) != -1)
-                            CreateObject(y * Y_Scale, -z * Z_Scale, x * X_Scale, (int)Utility.ObjectId.Ground, 0, Special, mapObjects);
+                            CreateObject(y * Y_Scale, -z * ZX_Scale, x * ZX_Scale, (int)Utility.ObjectId.Ground, 0, Special, mapObjects);
                     }
                     //地面に置くオブジェクト
                     else
                     {
-                        CreateObject(y * Y_Scale, -z * Z_Scale, x * X_Scale, objectId, 0, Special, mapObjects);
+                        CreateObject(y * Y_Scale, -z * ZX_Scale, x * ZX_Scale, objectId, 0, Special, mapObjects);
                     }
                 }
             }
@@ -82,7 +81,7 @@ public class StageCreateTask : MonoBehaviour
         GameObject obj = Instantiate(objects[objectId]);
         obj.transform.position = new Vector3Int(xPos, yPos, zPos);
 
-        Vector3Int pos = new Vector3Int(xPos, yPos, zPos);
+        Vector3Int pos = Utility.PositionToData(obj.transform.position);
         if (customId != 0)
             CustomObject(obj, objectId, customId, pos, mapObjects);
         else
@@ -142,7 +141,8 @@ public class SpecialObject
     public int[] ThisUnder;     //そのオブジェクトの位置がしたかどうか
     public int[] CustomObject;  //特殊な設定があるかどうか
     public int[] Kinematic;     //MapObjectsにいれないもの
-    
+    public int[] Block;         //プレイヤーが通れないところ
+
     public SpecialObject()
     {
         InUnder = new int[] {
@@ -171,6 +171,18 @@ public class SpecialObject
             (int)Utility.ObjectId.Ground,
             (int)Utility.ObjectId.Player
         };
+
+        Block = new int[]
+            {
+                (int)Utility.ObjectId.Fire,
+                (int)Utility.ObjectId.Stone,
+                (int)Utility.ObjectId.Wall,
+                (int)Utility.ObjectId.Water,
+                (int)Utility.ObjectId.Wood,
+                (int)Utility.ObjectId.WoodBlock,
+                (int)Utility.ObjectId.Hole
+            };
+
     }
 }
 #endregion

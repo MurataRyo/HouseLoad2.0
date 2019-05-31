@@ -24,6 +24,7 @@ public class Utility : MonoBehaviour
     //オブジェクトID[配列番号とのリンク]
     public enum ObjectId
     {
+        Hole,
         Player,
         Ground,
         Wood,
@@ -38,7 +39,6 @@ public class Utility : MonoBehaviour
 
     public enum MapId
     {
-        None,
         Hole,
         Player,
         Ground,
@@ -61,6 +61,11 @@ public class Utility : MonoBehaviour
     public static GameTask GetGameTask()
     {
         return GetTaskObject().GetComponent<GameTask>();
+    }
+
+    public static int BoolToInt(bool flag)
+    {
+        return flag ? 1 : -1;
     }
 
     public static MapId GetMapId(ObjectId objectId)
@@ -89,6 +94,54 @@ public class Utility : MonoBehaviour
 
         Debug.Log("指定されたオブジェクトが存在しません");
         return 0;
+    }
+
+    //現在のデータ(int)を座標(float)へ変換する
+    public static Vector3 DataToPosition(Vector3Int pos)
+    {
+        int y = pos.x * 3 + 1;
+
+        int z = -pos.y;
+
+        int x = pos.z;
+
+        return new Vector3(x, y, z);
+    }
+
+    //現在の座標(float)をデータ(int)へ変換する
+    public static Vector3Int PositionToData(Vector3 pos)
+    {
+        int y = Mathf.RoundToInt(pos.y) - 1;
+        y /= StageCreateTask.Y_Scale;
+
+        int z = -Mathf.RoundToInt(pos.z);
+
+        int x = Mathf.RoundToInt(pos.x);
+
+        return new Vector3Int(y, z, x);
+    }
+
+    //現在の座標(float)をデータ(int)へ変換する踏んでいるマス全て返す
+    public static Vector3Int[] PositionToData(Vector3 pos, float radius)
+    {
+        int y = Mathf.RoundToInt(pos.y) - 1;
+        y /= StageCreateTask.Y_Scale;
+
+        int xMin = PositionToData(pos - new Vector3(radius, 0f, 0f)).z;
+        int xMax = PositionToData(pos - new Vector3(-radius, 0f, 0f)).z;
+        int zMin = PositionToData(pos - new Vector3(0f, 0f, -radius)).y;
+        int zMax = PositionToData(pos - new Vector3(0f, 0f, radius)).y;
+
+        List<Vector3Int> vec3s = new List<Vector3Int>();
+        for (int i = xMin; i <= xMax; i++)
+        {
+            for (int j = zMin; j <= zMax; j++)
+            {
+                vec3s.Add(new Vector3Int(y, j, i));
+            }
+        }
+
+        return vec3s.ToArray();
     }
 
     //ベシエ曲線
