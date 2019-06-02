@@ -8,6 +8,7 @@ TagManager:
   - WarpLine
   - StageParent
   - StageFloor
+  - Canvas
   layers:
   - Default
   - TransparentFX

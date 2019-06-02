@@ -5,49 +5,56 @@ using System;
 
 public class ObjectChoice : MonoBehaviour
 {
+    private ChoiceUi choiceUi;
     private PlayerTask playerTask;
-    private GameObject choiceUi;
+    private GameObject choiceMark;
     private List<ChoiceClass> choiceObjects; //選択可能なオブジェクト
-    private int choiceNum;                    //選択しているオブジェクト※choiceObjectsの配列番号
+    private int choiceNum;                   //選択しているオブジェクト※choiceObjectsの配列番号
+
     private void Awake()
     {
         playerTask = GetComponent<PlayerTask>();
-        choiceUi = Instantiate(Resources.Load<GameObject>(GetPath.Ui + "/ChoiceUi"));
-        choiceUi.GetComponent<ChoiceUi>().mainCamera = playerTask.mainCamera;
-        choiceUi.SetActive(false);
+        choiceMark = Instantiate(Resources.Load<GameObject>(GetPath.Ui + "/ChoiceMark"));
+        choiceMark.AddComponent<ChoiceMark>().mainCamera = playerTask.mainCamera;
+        choiceMark.SetActive(false);
     }
 
-    private void Update()
+    private void Start()
     {
-        ChoiceChange();
+        choiceUi = playerTask.gameTask.gameObject.AddComponent<ChoiceUi>();
     }
 
-    private void ChoiceChange()
+    //選択の決定
+    public void Enter()
     {
-        if (choiceObjects.Count == 0)
+        //そもそもボタンを押していないとき
+        if (!playerTask.gameTask.controllerTask.EnterButton())
             return;
 
-        if (Input.GetKeyDown(KeyCode.O))
-        {
-            ChoiceChange(true);
-        }
-        else if (Input.GetKeyDown(KeyCode.L))
-        {
-            ChoiceChange(false);
-        }
+        //ボタンを押しても意味がないとき
+        if (choiceObjects.Count == 0 || playerTask.gameTask.eventCount != 0)
+            return;
+
+        choiceUi.Reset(choiceObjects[choiceNum].ThisObj().GetComponent<Gimmick>());
     }
 
-    private void ChoiceChange(bool flag)
+    //選択の変更
+    public void ChoiceChange()
     {
-        choiceNum += Utility.BoolToInt(flag);
-        if (choiceNum < 0 || choiceNum >= choiceObjects.Count)
+        if (choiceObjects.Count == 0 || playerTask.gameTask.eventCount != 0)
+            return;
+
+        //切り替えボタンを押したら
+        if (playerTask.controllerTask.SerectKey(true) || playerTask.controllerTask.SerectKey(false))
         {
-            if (choiceNum < 0)
-                choiceNum = choiceObjects.Count - 1;
-            else
-                choiceNum = 0;
+            //どっちのボタンか判別
+            bool flag = playerTask.controllerTask.SerectKey(true);
+            //変更
+            choiceNum = Utility.ChoiceChange(choiceNum, choiceObjects.Count, flag);
+            //UIの位置を更新
+            ChoicePosUpdate();
         }
-        ChoicePosUpdate();
+        Enter();
     }
 
     //マスが変更されたとき
@@ -120,14 +127,14 @@ public class ObjectChoice : MonoBehaviour
     {
         if (choiceObjects.Count == 0)
         {
-            if (choiceUi.activeInHierarchy)
-                choiceUi.SetActive(false);
+            if (choiceMark.activeInHierarchy)
+                choiceMark.SetActive(false);
 
             return;
         }
 
-        if (!choiceUi.activeInHierarchy)
-            choiceUi.SetActive(true);
+        if (!choiceMark.activeInHierarchy)
+            choiceMark.SetActive(true);
 
         ChoicePosUpdate();
     }
@@ -135,6 +142,6 @@ public class ObjectChoice : MonoBehaviour
     private void ChoicePosUpdate()
     {
         //選択中の座標に場所を変更                                                          微調整
-        choiceUi.transform.position = Utility.DataToPosition(choiceObjects[choiceNum].pos) + Vector3.up * 1.25f;
+        choiceMark.transform.position = Utility.DataToPosition(choiceObjects[choiceNum].pos) + Vector3.up * 1.25f;
     }
 }

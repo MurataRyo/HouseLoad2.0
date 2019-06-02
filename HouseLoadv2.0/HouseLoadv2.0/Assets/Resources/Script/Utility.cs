@@ -5,6 +5,9 @@ using System;
 
 public class Utility : MonoBehaviour
 {
+    public const float GameSizeX = 1920f;
+    public const float GameSizeY = 1080f;
+
     #region　ID一覧
 
     public enum ItemId
@@ -17,7 +20,7 @@ public class Utility : MonoBehaviour
 
     public enum ExItemId
     {
-        WaterBaketu,
+        WaterBaketu = ItemId.Baketu,
     }
 
 
@@ -52,6 +55,11 @@ public class Utility : MonoBehaviour
         Warp
     }
     #endregion
+
+    public static GameObject GetCanvas()
+    {
+        return GameObject.FindGameObjectWithTag("Canvas");
+    }
 
     public static GameObject GetTaskObject()
     {
@@ -156,6 +164,21 @@ public class Utility : MonoBehaviour
     {
         return (1 - t) * (1 - t) * start + 2 * (1 - t) * t * center + t * t * end;
     }
+
+    //選択の変更
+    public static int ChoiceChange(int baseNum,int maxNum,bool flag)
+    {
+        baseNum += Utility.BoolToInt(flag);
+        if (baseNum < 0 || baseNum >= maxNum)
+        {
+            if (baseNum < 0)
+                baseNum = maxNum - 1;
+            else
+                baseNum = 0;
+        }
+
+        return baseNum;
+    }
 }
 
 public class GetPath
@@ -166,6 +189,10 @@ public class GetPath
 
     public const string Txt = "Txt";
     public const string Tutorial = Txt + "/Tutorial";
+
+    public const string Font = "Font";
+
+    public const string Image = "Image";
 }
 
 public class MapObject

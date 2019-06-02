@@ -62,7 +62,7 @@ public class StageCreateTask : MonoBehaviour
                     int customId = Convert.ToInt32(str4[1]);
                     mapData[y][z][x] = mapId;
 
-                    //プレイヤーますは地面なので変更する
+                    //プレイヤーマスは地面なのでデータを変更する
                     if (objectId == (int)Utility.ObjectId.Player)
                         mapData[y][z][x] = (int)Utility.MapId.Ground;
 
@@ -209,7 +209,6 @@ public class SpecialObject
                 (int)Utility.MapId.Wood,
                 (int)Utility.MapId.WoodBlock,
                 (int)Utility.MapId.Hole,
-                (int)Utility.MapId.House,
                 (int)Utility.MapId.Warp
             };
     }

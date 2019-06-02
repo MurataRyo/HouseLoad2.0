@@ -34,7 +34,9 @@ public class PlayerTask : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.K))
+        objectChoice.ChoiceChange();
+
+        if (Input.GetKeyDown(KeyCode.K))
         {
             Vector3Int[] vec3 = Utility.PositionToData(transform.position, 0.3f);
             foreach (Vector3Int i in vec3)

@@ -2,19 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Warp : MonoBehaviour
+public class Warp : Gimmick
 {
     [HideInInspector] public int number;
     [HideInInspector] public Warp warpPos;
     [HideInInspector] public Vector3[] lineVetex;
     public BesieData besieData;
-    private GameTask gameTask;
     public WarpLine warpLine;
 
-    void Start()
+    public override void Start()
     {
-        gameTask = Utility.GetGameTask();
-        
+        base.Start();
+
         //ワープ先の指定
         foreach (MapObject mOb in gameTask.mapObjects)
         {
@@ -36,6 +35,12 @@ public class Warp : MonoBehaviour
         }
     }
 
+    public override void UseSet()
+    {
+        useBase = new UseBase(new int[] { -1 }, new string[] { "移動する" }, new string[] { "えらーありえない" });
+    }
+
+    #region ワープ関連
     //ワープのパスを生成
     private void CreateLine(Vector3 start, Vector3 end)
     {
@@ -96,4 +101,5 @@ public class Warp : MonoBehaviour
 
         return vec3s.ToArray();
     }
+    #endregion
 }

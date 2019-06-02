@@ -7,13 +7,26 @@ public class GameTask : MonoBehaviour
     public List<MapObject> mapObjects;  //マップのオブジェクト(動く可能性のある物のみ)
     public int[][][] stageData;         //ステージのデータを更新する左から y z x
     public SpecialObject Special;
-    // Start is called before the first frame update
-    void Start()
+    public int eventCount;              //動作が一部制限されるイベント
+    public bool textEvent;              //テキストを読むことしかできないイベント
+    public GameUiTask uiTask;
+    public ControllerTask controllerTask;
+    void Awake()
     {
         gameObject.AddComponent<StageCreateTask>();
+        uiTask = gameObject.AddComponent<GameUiTask>();
         mapObjects = new List<MapObject>();
         GetComponent<StageCreateTask>().MapDataCreate(GetPath.Tutorial + "/Stage1", mapObjects, ref stageData);
         Special = new SpecialObject();
+        textEvent = false;
+        eventCount = 0;
+        controllerTask = GetComponent<ControllerTask>();
+    }
+
+    // Start is called before the first frame update
+    void Start()
+    {
+
     }
 
     public bool InIfStageData(Vector3Int pos)

@@ -47,4 +47,19 @@ public class ControllerTask : MonoBehaviour
 
         joyKey = axis;
     }
+
+    public bool EnterButton()
+    {
+        return Input.GetKeyDown(KeyCode.Return);
+    }
+
+    public bool BackButton()
+    {
+        return Input.GetKeyDown(KeyCode.Q);
+    }
+
+    public bool SerectKey(bool flag)
+    {
+        return Input.GetKeyDown(flag ? KeyCode.O : KeyCode.L);
+    }
 }

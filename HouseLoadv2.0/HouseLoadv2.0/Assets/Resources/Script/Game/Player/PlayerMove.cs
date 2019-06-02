@@ -25,6 +25,9 @@ public class PlayerMove : MonoBehaviour
 
     public void Move()
     {
+        if (playerTask.gameTask.eventCount != 0)
+            return;
+
         Vector2 vec2 = playerTask.controllerTask.joyKey;   //Axisを取得
 
         //移動方向の取得
