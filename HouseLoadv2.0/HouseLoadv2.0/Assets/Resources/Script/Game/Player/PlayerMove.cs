@@ -6,30 +6,41 @@ using System;
 public class PlayerMove : MonoBehaviour
 {
     PlayerTask playerTask;
-    private const float MoveSpeed = 3f;     //移動速度
-    private float playerRadius = 0.25f;      //プレイヤーの半径
+    private const float MoveSpeed = 3f;         //移動速度
+    private float playerRadius = 0.25f;         //プレイヤーの半径
+    private const float RotationTime = 0.3f;    //回転速度※360°回転する時間
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         playerTask = GetComponent<PlayerTask>();
     }
 
-    public Vector3 NextPos()
+    //プレイヤーの回転　　　　　　　　移動方向
+    public void PlayerRotation(Vector3 rotation)
+    {
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(rotation), (360f / RotationTime) * Time.fixedDeltaTime);
+    }
+
+    public void Move()
     {
         Vector2 vec2 = playerTask.controllerTask.joyKey;   //Axisを取得
 
         //移動方向の取得
         Vector3 velocity =
             (new Vector3(playerTask.mainCamera.transform.forward.x, 0f, playerTask.mainCamera.transform.forward.z).normalized * vec2.y +
-            playerTask.mainCamera.transform.right * vec2.x);
+            playerTask.mainCamera.transform.right * vec2.x).normalized;
 
         //時間で管理する
-        velocity *= Time.deltaTime * MoveSpeed;
+        velocity *= Time.fixedDeltaTime;
 
         //移動後の地点を取得する
-        Vector3 nextPos = transform.position + new Vector3(velocity.x, 0f, velocity.z);
+        Vector3 nextPos = transform.position + new Vector3(velocity.x, 0f, velocity.z) * MoveSpeed;
 
-        return ObjectOnNextPos(nextPos);
+        //移動入力していたら回転する 回転は方向で決まるので計算前に大きさが変わっても問題ない
+        if (vec2 != Vector2.zero)
+            PlayerRotation(velocity);
+
+        transform.position = ObjectOnNextPos(nextPos);
     }
 
     //物の計算をした次の座標
@@ -51,18 +62,18 @@ public class PlayerMove : MonoBehaviour
             }
 
             //プレイヤーが範囲外にいる場合
-            if(vec3s.y < 0 || vec3s.z < 0 || 
+            if (vec3s.y < 0 || vec3s.z < 0 ||
                 vec3s.y >= playerTask.gameTask.stageData[vec3s.x].Length ||
                 vec3s.x >= playerTask.gameTask.stageData[vec3s.x][vec3s.y].Length)
             {
-                nextPos = FixPos(nextPos,Utility.DataToPosition(vec3s));
+                nextPos = FixPos(nextPos, Utility.DataToPosition(vec3s));
             }
         }
-        
+
         return nextPos;
     }
 
-    private Vector3 FixPos(Vector3 nextPos,Vector3 objPos)
+    private Vector3 FixPos(Vector3 nextPos, Vector3 objPos)
     {
         //X軸を直すかX軸を直すか決める(めり込み具合が少ないほうを直す)
         if (Mathf.Abs(nextPos.x - objPos.x) > Mathf.Abs(nextPos.z - objPos.z))

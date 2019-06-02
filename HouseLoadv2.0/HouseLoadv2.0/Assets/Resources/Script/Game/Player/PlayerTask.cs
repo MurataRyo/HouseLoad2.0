@@ -11,21 +11,21 @@ public class PlayerTask : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
+        controllerTask = Utility.GetTaskObject().GetComponent<ControllerTask>();
+        mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
+        mainCamera.GetComponent<CameraTask>().player = gameObject;
         playerMove = gameObject.AddComponent<PlayerMove>();
         gameTask = Utility.GetGameTask();
     }
 
     void Start()
     {
-        controllerTask = Utility.GetTaskObject().GetComponent<ControllerTask>();
-        mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        transform.position = playerMove.NextPos();
-
         if(Input.GetKeyDown(KeyCode.K))
         {
             Vector3Int[] vec3 = Utility.PositionToData(transform.position, 0.3f);
@@ -34,6 +34,10 @@ public class PlayerTask : MonoBehaviour
                 Debug.Log(i);
             }
         }
-        
+    }
+
+    void FixedUpdate()
+    {
+        playerMove.Move();
     }
 }

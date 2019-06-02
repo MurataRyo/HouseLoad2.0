@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ControllerTask : MonoBehaviour
 {
-    public Vector2 joyKey;
+    public Vector2 joyKey = Vector2.zero;
     public Vector2 joyKeyLog;
     enum Controller
     {

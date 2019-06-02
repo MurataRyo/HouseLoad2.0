@@ -19,6 +19,7 @@ public class StageCreateTask : MonoBehaviour
     {
         TextAsset text = Resources.Load<TextAsset>(path);
         MapDataToCreateStage(text.text, mapObjects, ref mapData);
+        gameObject.AddComponent<DrawingFloorTask>();
     }
 
     public void MapDataToCreateStage(string str0, List<MapObject> mapObjects, ref int[][][] mapData)
@@ -26,11 +27,22 @@ public class StageCreateTask : MonoBehaviour
         //下にブロックを置くもの
         SpecialObject Special = new SpecialObject();
 
+        //ステージの親オブジェクト
+        GameObject stageParent = new GameObject();
+        stageParent.name = "StageParent";
+        stageParent.tag = "StageParent";
+
         //str1→階層ごとのデータ
         string[] str1 = str0.Split(char.Parse("/"));
         mapData = new int[str1.Length][][];
         for (int y = 0; y < str1.Length; y++)
         {
+            //階層ごとの親オブジェクト
+            GameObject floor = new GameObject();
+            floor.transform.parent = stageParent.transform;
+            floor.name = "Floor" + y;
+            floor.tag = "StageFloor";
+
             //str2→横1列ごとのデータ
             string[] str2 = str1[y].Split(char.Parse(";"));
             mapData[y] = new int[str2.Length][];
@@ -57,15 +69,15 @@ public class StageCreateTask : MonoBehaviour
                     //地上に置くオブジェクトならtrue
                     if (Array.IndexOf(Special.ThisUnder, mapId) == -1)
                     {
-                        CreateObject((y * Y_Scale) + 1, -z * ZX_Scale, x * ZX_Scale, objectId, customId, Special, mapObjects);
+                        CreateObject((y * Y_Scale) + 1, -z * ZX_Scale, x * ZX_Scale, objectId, customId, Special, mapObjects, floor);
                         //オブジェクトの下にブロックを置くものならtrue
                         if (Array.IndexOf(Special.InUnder, mapId) != -1)
-                            CreateObject(y * Y_Scale, -z * ZX_Scale, x * ZX_Scale, (int)Utility.ObjectId.Ground, 0, Special, mapObjects);
+                            CreateObject(y * Y_Scale, -z * ZX_Scale, x * ZX_Scale, (int)Utility.ObjectId.Ground, 0, Special, mapObjects, floor);
                     }
                     //地面に置くオブジェクト
                     else
                     {
-                        CreateObject(y * Y_Scale, -z * ZX_Scale, x * ZX_Scale, objectId, 0, Special, mapObjects);
+                        CreateObject(y * Y_Scale, -z * ZX_Scale, x * ZX_Scale, objectId, 0, Special, mapObjects, floor);
                     }
                 }
             }
@@ -73,13 +85,18 @@ public class StageCreateTask : MonoBehaviour
     }
 
     //オブジェクトの生成
-    public void CreateObject(int yPos, int zPos, int xPos, int objectId, int customId, SpecialObject Special, List<MapObject> mapObjects)
+    public void CreateObject(int yPos, int zPos, int xPos, int objectId, int customId, SpecialObject Special, List<MapObject> mapObjects,GameObject parentObj)
     {
         if (objects == null)
             objects = ObjectsLoad();
 
         GameObject obj = Instantiate(objects[objectId]);
         obj.transform.position = new Vector3Int(xPos, yPos, zPos);
+
+        if(objectId != (int)Utility.ObjectId.Player)
+        {
+            obj.transform.parent = parentObj.transform;
+        }
 
         Vector3Int pos = Utility.PositionToData(obj.transform.position);
         if (customId != 0)

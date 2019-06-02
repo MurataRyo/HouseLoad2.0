@@ -9,6 +9,7 @@ public class Warp : MonoBehaviour
     [HideInInspector] public Vector3[] lineVetex;
     public BesieData besieData;
     private GameTask gameTask;
+    public WarpLine warpLine;
 
     void Start()
     {
@@ -38,8 +39,17 @@ public class Warp : MonoBehaviour
     //ワープのパスを生成
     private void CreateLine(Vector3 start, Vector3 end)
     {
+        GameObject go = new GameObject();
+        go.transform.position = transform.position;
+        go.name = "WarpLine";
+        go.tag = "WarpLine";
+        warpLine = go.AddComponent<WarpLine>();
+
+        warpLine.objectFloor[0] = Utility.PositionToData(transform.position).x;
+        warpLine.objectFloor[1] = Utility.PositionToData(warpPos.transform.position).x;
+
         LineRenderer line =
-        gameObject.AddComponent<LineRenderer>();
+        go.AddComponent<LineRenderer>();
 
         line.widthMultiplier = 0.15f;
 

@@ -5,6 +5,9 @@ TagManager:
   serializedVersion: 2
   tags:
   - Task
+  - WarpLine
+  - StageParent
+  - StageFloor
   layers:
   - Default
   - TransparentFX
