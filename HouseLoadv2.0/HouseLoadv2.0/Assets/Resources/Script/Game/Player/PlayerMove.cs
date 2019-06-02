@@ -13,6 +13,8 @@ public class PlayerMove : MonoBehaviour
     void Awake()
     {
         playerTask = GetComponent<PlayerTask>();
+
+        GameObject go = new GameObject();
     }
 
     //プレイヤーの回転　　　　　　　　移動方向
@@ -41,6 +43,8 @@ public class PlayerMove : MonoBehaviour
             PlayerRotation(velocity);
 
         transform.position = ObjectOnNextPos(nextPos);
+
+        UpdateData();
     }
 
     //物の計算をした次の座標
@@ -62,9 +66,7 @@ public class PlayerMove : MonoBehaviour
             }
 
             //プレイヤーが範囲外にいる場合
-            if (vec3s.y < 0 || vec3s.z < 0 ||
-                vec3s.y >= playerTask.gameTask.stageData[vec3s.x].Length ||
-                vec3s.x >= playerTask.gameTask.stageData[vec3s.x][vec3s.y].Length)
+            if (!playerTask.gameTask.InIfStageData(vec3s))
             {
                 nextPos = FixPos(nextPos, Utility.DataToPosition(vec3s));
             }
@@ -86,5 +88,17 @@ public class PlayerMove : MonoBehaviour
         }
 
         return nextPos;
+    }
+
+    //データ上の場所変更
+    private void UpdateData()
+    {
+        Vector3Int pos = Utility.PositionToData(transform.position);
+        playerTask.positionLog = playerTask.position;
+        playerTask.position = pos;
+
+        //場所が変更されたら変更時の処理を行う
+        if (playerTask.position != playerTask.positionLog)
+            playerTask.objectChoice.UpdatePos(playerTask.positionLog, playerTask.position);
     }
 }

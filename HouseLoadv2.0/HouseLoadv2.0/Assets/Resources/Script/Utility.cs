@@ -99,7 +99,7 @@ public class Utility : MonoBehaviour
     //現在のデータ(int)を座標(float)へ変換する
     public static Vector3 DataToPosition(Vector3Int pos)
     {
-        int y = pos.x * 3 + 1;
+        int y = pos.x * 4 + 1;
 
         int z = -pos.y;
 
@@ -162,6 +162,7 @@ public class GetPath
 {
     public const string Prefab = "Prefab";
     public const string StageObject = Prefab + "/StageObject";
+    public const string Ui = Prefab + "/Ui";
 
     public const string Txt = "Txt";
     public const string Tutorial = Txt + "/Tutorial";

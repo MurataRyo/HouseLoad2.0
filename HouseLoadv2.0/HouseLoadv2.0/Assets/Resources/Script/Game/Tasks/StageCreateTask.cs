@@ -6,7 +6,7 @@ using System;
 public class StageCreateTask : MonoBehaviour
 {
     public static GameObject[] objects;
-    public const int Y_Scale = 3;       //Y軸のブロック同士の間隔
+    public const int Y_Scale = 4;       //Y軸のブロック同士の間隔
     public const int ZX_Scale = 1;       //Z軸のブロック同士の間隔
 
     void Start()
@@ -85,7 +85,7 @@ public class StageCreateTask : MonoBehaviour
     }
 
     //オブジェクトの生成
-    public void CreateObject(int yPos, int zPos, int xPos, int objectId, int customId, SpecialObject Special, List<MapObject> mapObjects,GameObject parentObj)
+    public void CreateObject(int yPos, int zPos, int xPos, int objectId, int customId, SpecialObject Special, List<MapObject> mapObjects, GameObject parentObj)
     {
         if (objects == null)
             objects = ObjectsLoad();
@@ -93,7 +93,7 @@ public class StageCreateTask : MonoBehaviour
         GameObject obj = Instantiate(objects[objectId]);
         obj.transform.position = new Vector3Int(xPos, yPos, zPos);
 
-        if(objectId != (int)Utility.ObjectId.Player)
+        if (objectId != (int)Utility.ObjectId.Player)
         {
             obj.transform.parent = parentObj.transform;
         }
@@ -151,7 +151,7 @@ public class StageCreateTask : MonoBehaviour
 }
 
 
-#region 
+//条件式などに使用
 public class SpecialObject
 {
     public int[] InUnder;       //そのオブジェクトの下にブロックを置くかどうか
@@ -159,6 +159,7 @@ public class SpecialObject
     public int[] CustomObject;  //特殊な設定があるかどうか
     public int[] Kinematic;     //MapObjectsにいれないもの
     public int[] Block;         //プレイヤーが通れないところ
+    public int[] ChoiceObject;  //選択可能なオブジェクト
 
     public SpecialObject()
     {
@@ -200,6 +201,16 @@ public class SpecialObject
                 (int)Utility.ObjectId.Hole
             };
 
+        ChoiceObject = new int[]
+            {
+                (int)Utility.MapId.Fire,
+                (int)Utility.MapId.Stone,
+                (int)Utility.MapId.Water,
+                (int)Utility.MapId.Wood,
+                (int)Utility.MapId.WoodBlock,
+                (int)Utility.MapId.Hole,
+                (int)Utility.MapId.House,
+                (int)Utility.MapId.Warp
+            };
     }
 }
-#endregion

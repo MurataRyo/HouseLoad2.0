@@ -12,7 +12,18 @@ public class GameTask : MonoBehaviour
     {
         gameObject.AddComponent<StageCreateTask>();
         mapObjects = new List<MapObject>();
-        GetComponent<StageCreateTask>().MapDataCreate(GetPath.Tutorial + "/Stage1",mapObjects,ref stageData);
+        GetComponent<StageCreateTask>().MapDataCreate(GetPath.Tutorial + "/Stage1", mapObjects, ref stageData);
         Special = new SpecialObject();
+    }
+
+    public bool InIfStageData(Vector3Int pos)
+    {
+        //プレイヤーが範囲外にいる場合
+        if (pos.y < 0 || pos.z < 0 ||
+            pos.y >= stageData[pos.x].Length ||
+            pos.x >= stageData[pos.x][pos.y].Length)
+            return false;
+
+        return true;
     }
 }

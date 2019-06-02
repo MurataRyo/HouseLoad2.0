@@ -45,6 +45,10 @@ public class Warp : MonoBehaviour
         go.tag = "WarpLine";
         warpLine = go.AddComponent<WarpLine>();
 
+        gameObject.transform.parent = go.transform;
+        warpPos.transform.parent = go.transform;
+
+
         warpLine.objectFloor[0] = Utility.PositionToData(transform.position).x;
         warpLine.objectFloor[1] = Utility.PositionToData(warpPos.transform.position).x;
 

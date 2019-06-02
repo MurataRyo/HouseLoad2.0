@@ -8,7 +8,7 @@ public class CameraTask : MonoBehaviour
     public const float MinAngleX = 20f;
     public const float MaxAngleX = 60f;
     public Vector2 angle;
-    public const float Range = 5f;
+    public const float Range = 4f;
     public Vector2 position = Vector2.zero;
     private float RotateSpeed = 50f;
 

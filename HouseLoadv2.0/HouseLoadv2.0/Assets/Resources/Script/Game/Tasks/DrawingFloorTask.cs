@@ -20,12 +20,6 @@ public class DrawingFloorTask : MonoBehaviour
             floorObjects[count] = child.gameObject;
             count++;
         }
-
-        GameObject[] warpObject = GameObject.FindGameObjectsWithTag("WarpLine");
-        for (int i = 0; i < warpObject.Length; i++)
-        {
-            warpLines[i] = warpObject[i].GetComponent<WarpLine>();
-        }
     }
 
     public void StopDraw(int nextFloor)
@@ -35,6 +29,10 @@ public class DrawingFloorTask : MonoBehaviour
             if (floorObjects[i].activeInHierarchy)
                 floorObjects[i].SetActive(false);
         }
+        if (warpLines == null)
+            WarpObjLoad();
+
+        WarpSet(nextFloor, false);
     }
 
     public void ResumeDraw(int nextFloor)
@@ -44,17 +42,60 @@ public class DrawingFloorTask : MonoBehaviour
             if (!floorObjects[i].activeInHierarchy)
                 floorObjects[i].SetActive(true);
         }
+        if (warpLines == null)
+            WarpObjLoad();
+
+        WarpSet(nextFloor, true);
     }
 
     public void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Alpha0))
+        for(int i = 48;i < 48 + 6;i++)
         {
-            StopDraw(0);
+            if (Input.GetKeyDown((KeyCode)i))
+            {
+                StopDraw(i-48);
+                ResumeDraw(i-48);
+            }
         }
-        if (Input.GetKeyDown(KeyCode.Alpha1))
+    }
+
+    private void WarpObjLoad()
+    {
+        GameObject[] warpObject = GameObject.FindGameObjectsWithTag("WarpLine");
+        warpLines = new WarpLine[warpObject.Length];
+        for (int i = 0; i < warpObject.Length; i++)
         {
-            ResumeDraw(1);
+            warpLines[i] = warpObject[i].GetComponent<WarpLine>();
         }
+    }
+
+    //ワープの描画変更       　　　　 表示か消去か
+    private void WarpSet(int nextFloor,bool set)
+    {
+        foreach (WarpLine warpLine in warpLines)
+        {
+            //アクティブしているかどうか
+            bool actFlag = warpLine.gameObject.activeInHierarchy;
+
+            if (actFlag == set ||
+                actFlag == WarpLineIf(nextFloor, warpLine,set))
+                continue;
+            
+                warpLine.gameObject.SetActive(set);
+        }
+    }
+
+    //Lineを描画するかどうか
+    private bool WarpLineIf(int nextFloor,WarpLine warpLine,bool set)
+    {
+        foreach(int linePos in warpLine.objectFloor)
+        {
+            if(nextFloor >= linePos)
+            {
+                return true;
+            }
+        }
+        return false;
     }
 }
