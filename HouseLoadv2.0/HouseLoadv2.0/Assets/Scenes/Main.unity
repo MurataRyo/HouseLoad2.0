@@ -255,7 +255,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eventCount: 0
+  textEvent: 0
   uiTask: {fileID: 0}
+  controllerTask: {fileID: 0}
 --- !u!114 &1422657999
 MonoBehaviour:
   m_ObjectHideFlags: 0
