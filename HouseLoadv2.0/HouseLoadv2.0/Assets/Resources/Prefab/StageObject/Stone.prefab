@@ -52,10 +52,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5051513925175789612}
     m_Modifications:
-    - target: {fileID: 100000, guid: 112ca5ad65babcb4497ad997a20342df, type: 3}
-      propertyPath: m_Name
-      value: rock model
-      objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 112ca5ad65babcb4497ad997a20342df, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -112,10 +108,18 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.03
       objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 112ca5ad65babcb4497ad997a20342df, type: 3}
+      propertyPath: m_Name
+      value: rock model
+      objectReference: {fileID: 0}
     - target: {fileID: 2300000, guid: 112ca5ad65babcb4497ad997a20342df, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 0a0102da0dffacd488d4615542d8d619, type: 2}
+    - target: {fileID: 400002, guid: 112ca5ad65babcb4497ad997a20342df, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 23.2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 112ca5ad65babcb4497ad997a20342df, type: 3}
 --- !u!4 &2872984196181260342 stripped

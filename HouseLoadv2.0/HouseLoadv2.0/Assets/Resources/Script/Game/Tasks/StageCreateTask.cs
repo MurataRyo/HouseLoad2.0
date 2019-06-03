@@ -22,7 +22,7 @@ public class StageCreateTask : MonoBehaviour
         gameObject.AddComponent<DrawingFloorTask>();
     }
 
-    public void MapDataToCreateStage(string str0, List<MapObject> mapObjects, ref int[][][] mapData)
+    public void MapDataToCreateStage(string str, List<MapObject> mapObjects, ref int[][][] mapData)
     {
         //下にブロックを置くもの
         SpecialObject Special = new SpecialObject();
@@ -32,8 +32,13 @@ public class StageCreateTask : MonoBehaviour
         stageParent.name = "StageParent";
         stageParent.tag = "StageParent";
 
+        //アイテムとマップで分ける
+        string[] str0 = str.Split(char.Parse("|")); ;
+
+        ItemAdd(str0[0]);
+
         //str1→階層ごとのデータ
-        string[] str1 = str0.Split(char.Parse("/"));
+        string[] str1 = str0[1].Split(char.Parse("/"));
         mapData = new int[str1.Length][][];
         for (int y = 0; y < str1.Length; y++)
         {
@@ -82,6 +87,18 @@ public class StageCreateTask : MonoBehaviour
                 }
             }
         }
+    }
+
+    //アイテムのデータを渡す
+    private void ItemAdd(string str)
+    {
+        string[] itemCode = str.Split(char.Parse("/"));
+        int[] num = new int[itemCode.Length];
+        for (int i = 0; i < num.Length; i++)
+        {
+            num[i] = Convert.ToInt32(itemCode[i]);
+        }
+        GetComponent<ItemTask>().ItemCreate(num);
     }
 
     //オブジェクトの生成

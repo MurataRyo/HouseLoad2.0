@@ -193,6 +193,8 @@ public class GetPath
     public const string Font = "Font";
 
     public const string Image = "Image";
+    public const string Item = Image + "/Item";
+    public const string ExItem = Item + "/ExItem";
 }
 
 public class MapObject

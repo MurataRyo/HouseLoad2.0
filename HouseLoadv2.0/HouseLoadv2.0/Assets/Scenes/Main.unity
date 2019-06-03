@@ -221,6 +221,7 @@ GameObject:
   - component: {fileID: 1422657997}
   - component: {fileID: 1422657998}
   - component: {fileID: 1422657999}
+  - component: {fileID: 1422658000}
   m_Layer: 0
   m_Name: Tasks
   m_TagString: Task
@@ -272,6 +273,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   joyKey: {x: 0, y: 0}
   joyKeyLog: {x: 0, y: 0}
+--- !u!114 &1422658000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1422657996}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea628d86fe10f02468fe829090177be6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2081064975
 GameObject:
   m_ObjectHideFlags: 0
