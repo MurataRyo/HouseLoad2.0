@@ -43,11 +43,11 @@ public class PlayerMove : MonoBehaviour
 
         //移動入力していたら回転する 回転は方向で決まるので計算前に大きさが変わっても問題ない
         if (vec2 != Vector2.zero)
+        {
+            UpdateData();
             PlayerRotation(velocity);
-
+        }
         transform.position = ObjectOnNextPos(nextPos);
-
-        UpdateData();
     }
 
     //物の計算をした次の座標
@@ -97,11 +97,9 @@ public class PlayerMove : MonoBehaviour
     private void UpdateData()
     {
         Vector3Int pos = Utility.PositionToData(transform.position);
-        playerTask.positionLog = playerTask.position;
         playerTask.position = pos;
 
         //場所が変更されたら変更時の処理を行う
-        if (playerTask.position != playerTask.positionLog)
-            playerTask.objectChoice.UpdatePos(playerTask.positionLog, playerTask.position);
+        playerTask.objectChoice.UpdatePos(playerTask.position);
     }
 }

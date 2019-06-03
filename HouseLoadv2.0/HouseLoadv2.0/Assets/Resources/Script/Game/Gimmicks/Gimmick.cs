@@ -6,17 +6,29 @@ public class Gimmick : MonoBehaviour
 {
     public UseBase useBase;
     public GameTask gameTask;
+    public ItemTask itemTask;
 
     // Start is called before the first frame update
     public virtual void Start()
     {
         gameTask = Utility.GetGameTask();
+        itemTask = Utility.GetTaskObject().GetComponent<ItemTask>(); 
         UseSet();
     }
 
     public virtual void UseSet()
     {
 
+    }
+
+    public virtual IEnumerator Use(int itemNum)
+    {
+        return null;
+    }
+
+    public virtual bool UseIf(int itemNum)
+    {
+        return false;
     }
 }
 

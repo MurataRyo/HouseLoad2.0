@@ -15,6 +15,9 @@ public class ChoiceUi : MonoBehaviour
     private const float uiInterval = 75f;
     private int choiceNum;
     private bool[] flag;
+    private ObjectChoice objectChoice;
+
+    private bool okFlag;
 
     private void Start()
     {
@@ -26,11 +29,13 @@ public class ChoiceUi : MonoBehaviour
         choiceMark = uiTask.NewImageUi(sprite,Vector2.zero,Vector2.one * 50f).gameObject;
         choiceMark.transform.eulerAngles = Vector3.forward * 90f;
         choiceMark.SetActive(false);
+        objectChoice = GameObject.FindGameObjectWithTag("Player").GetComponent<ObjectChoice>();
     }
 
 
     public void Reset(Gimmick choiceGimmick)
     {
+        okFlag = false;
         choiceNum = 0;
         activeFlag = true;
         gameTask.eventCount++;
@@ -50,7 +55,7 @@ public class ChoiceUi : MonoBehaviour
 
     private void Enter()
     {
-
+       StartCoroutine(choiceGimmick.Use(choiceNum));
     }
 
     private void UiAdd()
@@ -60,7 +65,7 @@ public class ChoiceUi : MonoBehaviour
         flag = new bool[textNum];
         for (int i = 0; i < textNum; i++)
         {
-            flag[i] = i % 2 == 0;   //ここに使えるかどうかの条件式をかく
+            flag[i] = choiceGimmick.UseIf(i);   //ここに使えるかどうかの条件式をかく
             Color color = flag[i] ? new Color(0f, 0f, 0f, 1f) : new Color(0.3f, 0.3f, 0.3f, 1f);
             string message = flag[i] ? choiceGimmick.useBase.message[i] : choiceGimmick.useBase.noMessage[i];
             Vector2 pos = basePos - new Vector2(0f, uiInterval * i);
@@ -97,12 +102,16 @@ public class ChoiceUi : MonoBehaviour
             End();
             return;
         }
-
-        if(gameTask.controllerTask.EnterButton() && flag[choiceNum])
+        
+        if(gameTask.controllerTask.EnterButton() && flag[choiceNum] && okFlag)
         {
+            End();
             Enter();
+            Vector3Int pos = Utility.PositionToData(objectChoice.playerTask.transform.position);
+            objectChoice.UpdatePos(pos);
             return;
         }
+        okFlag = true;
 
         //切り替えボタンを押したら
         if (gameTask.controllerTask.SerectKey(true) || gameTask.controllerTask.SerectKey(false))

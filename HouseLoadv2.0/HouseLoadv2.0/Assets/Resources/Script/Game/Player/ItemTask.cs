@@ -6,17 +6,18 @@ using UnityEngine.UI;
 
 public class ItemTask : MonoBehaviour
 {
-    Item[] items;
+    public Item[] items;
     Image whiteBack;
     GameTask gameTask;
     public void Awake()
     {
-        gameTask = Utility.GetGameTask();
+
     }
 
     //初期化               //ItemIdの順で渡す
     public void ItemCreate(int[] itemNum)
     {
+        gameTask = Utility.GetGameTask();
         whiteBack = gameTask.uiTask.NewImageUi(null, new Vector2(960f, -990f), new Vector2(1920f, 180f));
         whiteBack.color = new Color(1f, 1f, 1f, 0.8f);
         int num = Enum.GetValues(typeof(Utility.ItemId)).Length;
@@ -27,13 +28,13 @@ public class ItemTask : MonoBehaviour
 
             if (num == (int)Utility.ItemId.Baketu)
                 items[i] = new ItemWater(itemNum[i], i, sprite);
-
-            items[i] = new Item(itemNum[i], i, sprite);
+            else
+                items[i] = new Item(itemNum[i], i, sprite);
         }
     }
 }
 
-class Item
+public class Item
 {
     public int num;        //数
     public int itemId;
@@ -63,6 +64,7 @@ class Item
 
         if (itemId != (int)Utility.ItemId.Baketu)
             text = Utility.GetTaskObject().GetComponent<GameUiTask>().NewTextUi(num.ToString(), pos + Vector3.right * 135f - new Vector3(-Utility.GameSizeX / 2, Utility.GameSizeY / 2, 0f), Color.black);
+
         UseUpdate();
     }
 
@@ -72,7 +74,7 @@ class Item
             return;
 
         bool flag = num != 0;
-        if(text.gameObject.activeInHierarchy != flag)
+        if (text.gameObject.activeInHierarchy != flag)
         {
             text.gameObject.SetActive(flag);
         }
@@ -93,11 +95,13 @@ class ItemWater : Item
     public ItemWater(int num, int itemId, Sprite sprite) : base(num, itemId, sprite)
     {
         waterSprite = Resources.Load<Sprite>(GetPath.ExItem + "/WaterBaketu");
+        Debug.Log(waterSprite);
+        UseUpdate();
     }
 
     public override void UseUpdate()
     {
         Sprite next = num <= 1 ? sprite : waterSprite;
-        sprite = next;
+        image.sprite = next;
     }
 }

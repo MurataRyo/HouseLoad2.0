@@ -12,7 +12,6 @@ public class PlayerTask : MonoBehaviour
     public GameTask gameTask;
 
     public Vector3Int position;
-    public Vector3Int positionLog;
     // Start is called before the first frame update
     void Awake()
     {
@@ -23,7 +22,7 @@ public class PlayerTask : MonoBehaviour
         objectChoice = gameObject.AddComponent<ObjectChoice>();
         gameTask = Utility.GetGameTask();
 
-        position = positionLog = Utility.PositionToData(transform.position);
+        position  = Utility.PositionToData(transform.position);
     }
 
     void Start()

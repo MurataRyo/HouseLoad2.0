@@ -26,7 +26,22 @@ public class GameTask : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        
+    }
 
+    public void DeleteObject(Vector3Int pos,int nextData)
+    {
+        foreach(MapObject mobj in mapObjects)
+        {
+            if(mobj.pos == pos)
+            {
+                mapObjects.Remove(mobj);
+                Destroy(mobj.go);
+                break;
+            }
+        }
+
+        stageData[pos.x][pos.y][pos.z] = nextData;
     }
 
     public bool InIfStageData(Vector3Int pos)

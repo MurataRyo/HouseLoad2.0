@@ -6,7 +6,7 @@ using System;
 public class ObjectChoice : MonoBehaviour
 {
     private ChoiceUi choiceUi;
-    private PlayerTask playerTask;
+    public PlayerTask playerTask;
     private GameObject choiceMark;
     private List<ChoiceClass> choiceObjects; //選択可能なオブジェクト
     private int choiceNum;                   //選択しているオブジェクト※choiceObjectsの配列番号
@@ -41,7 +41,7 @@ public class ObjectChoice : MonoBehaviour
     //選択の変更
     public void ChoiceChange()
     {
-        if (choiceObjects.Count == 0 || playerTask.gameTask.eventCount != 0)
+        if (choiceObjects == null || choiceObjects.Count == 0 || playerTask.gameTask.eventCount != 0)
             return;
 
         //切り替えボタンを押したら
@@ -58,25 +58,21 @@ public class ObjectChoice : MonoBehaviour
     }
 
     //マスが変更されたとき
-    public void UpdatePos(Vector3Int oldPos, Vector3Int newPos)
+    public void UpdatePos(Vector3Int newPos)
     {
-        Debug.Log("場所更新");
-        NewChoiceObject(oldPos, newPos);
+        NewChoiceObject(newPos);
         choiceNum = 0;
 
         ChoiceUiSet();
     }
 
     //choiceObjectの更新
-    void NewChoiceObject(Vector3Int oldPos, Vector3Int newPos)
+    public void NewChoiceObject( Vector3Int newPos)
     {
         choiceObjects = new List<ChoiceClass>();
         AddChoicePos(newPos);
-        AddChoicePos(newPos + Vector3Int.up);
-        AddChoicePos(newPos + Vector3Int.down);
-        AddChoicePos(newPos + new Vector3Int(0, 0, 1));
-        AddChoicePos(newPos + new Vector3Int(0, 0, -1));
-        ChoicePosSort(oldPos, newPos);
+        AddChoicePos(Utility.PositionToData(playerTask.gameObject.transform.position + playerTask.gameObject.transform.forward));
+        ChoicePosSort(newPos);
     }
 
     //選択可能マスを追加
@@ -96,7 +92,7 @@ public class ObjectChoice : MonoBehaviour
     }
 
     //並び替え
-    void ChoicePosSort(Vector3Int oldPos, Vector3Int newPos)
+    void ChoicePosSort(Vector3Int newPos)
     {
         int count = 1;
 
@@ -106,7 +102,7 @@ public class ObjectChoice : MonoBehaviour
             for (int i = count; i < choiceObjects.Count; i++)
             {
                 //centerに近いほど先に選択される※キャラの向いているマス
-                Vector3 centerPos = Utility.DataToPosition(newPos * 2 - oldPos) + transform.forward;
+                Vector3 centerPos = Utility.DataToPosition(newPos)  + transform.forward;
                 if ((Utility.DataToPosition(choiceObject.pos) - centerPos).magnitude < (Utility.DataToPosition(choiceObjects[i].pos) - centerPos).magnitude)
                 {
                     choiceObject.number++;
