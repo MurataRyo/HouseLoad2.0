@@ -19,13 +19,11 @@ public class ChoiceClass : IComparable
     //このオブジェクトを探す
     public GameObject ThisObj()
     {
-        if (go != null)
-            return go;
-
         GameTask gameTask = Utility.GetGameTask();
         foreach (MapObject mapObject in gameTask.mapObjects)
         {
-            if (mapObject.pos == pos)
+            if (mapObject.pos == pos &&
+                (Utility.MapId)mapId == Utility.GetMapId((Utility.ObjectId)mapObject.objectId))
             {
                 go = mapObject.go;
                 return go;

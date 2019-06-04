@@ -45,6 +45,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameTask: {fileID: 0}
+  itemTask: {fileID: 0}
 --- !u!1001 &2872984196181648054
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -62,7 +63,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 112ca5ad65babcb4497ad997a20342df, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -0.25
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 112ca5ad65babcb4497ad997a20342df, type: 3}
       propertyPath: m_LocalRotation.x
@@ -118,7 +119,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 0a0102da0dffacd488d4615542d8d619, type: 2}
     - target: {fileID: 400002, guid: 112ca5ad65babcb4497ad997a20342df, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 23.2
+      value: 5.8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 112ca5ad65babcb4497ad997a20342df, type: 3}

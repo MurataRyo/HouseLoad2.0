@@ -5,7 +5,7 @@ using UnityEngine;
 public class DrawingFloorTask : MonoBehaviour
 {
     GameObject stageParent;
-    GameObject[] floorObjects;
+    public GameObject[] floorObjects;
     WarpLine[] warpLines;
 
     private void Awake()

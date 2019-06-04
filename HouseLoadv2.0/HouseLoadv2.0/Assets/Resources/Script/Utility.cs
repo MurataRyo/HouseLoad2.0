@@ -119,7 +119,7 @@ public class Utility : MonoBehaviour
     //現在の座標(float)をデータ(int)へ変換する
     public static Vector3Int PositionToData(Vector3 pos)
     {
-        int y = Mathf.RoundToInt(pos.y) - 1;
+        int y = Mathf.RoundToInt(pos.y);
         y /= StageCreateTask.Y_Scale;
 
         int z = -Mathf.RoundToInt(pos.z);
@@ -166,7 +166,7 @@ public class Utility : MonoBehaviour
     }
 
     //選択の変更
-    public static int ChoiceChange(int baseNum,int maxNum,bool flag)
+    public static int ChoiceChange(int baseNum, int maxNum, bool flag)
     {
         baseNum += Utility.BoolToInt(flag);
         if (baseNum < 0 || baseNum >= maxNum)
@@ -230,6 +230,16 @@ public struct BesieData
         this.start = start;
         this.end = end;
         this.center = center;
+    }
+
+    public Vector3[] Positions(int num)
+    {
+        Vector3[] pos = new Vector3[num + 1];
+        for (int i = 0; i < num + 1; i++)
+        {
+            pos[i] = Position(i * (1f / num));
+        }
+        return pos;
     }
 
     public Vector3 Position(float pos)

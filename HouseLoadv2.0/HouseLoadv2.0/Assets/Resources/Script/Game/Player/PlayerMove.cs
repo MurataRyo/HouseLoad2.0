@@ -18,9 +18,9 @@ public class PlayerMove : MonoBehaviour
     }
 
     //プレイヤーの回転　　　　　　　　移動方向
-    public void PlayerRotation(Vector3 rotation)
+    public void PlayerRotation(Vector3 velocity, float speed)
     {
-        transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(rotation), (360f / RotationTime) * Time.fixedDeltaTime);
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(velocity), (360f / RotationTime) * Time.fixedDeltaTime * speed);
     }
 
     public void Move()
@@ -45,7 +45,7 @@ public class PlayerMove : MonoBehaviour
         if (vec2 != Vector2.zero)
         {
             UpdateData();
-            PlayerRotation(velocity);
+            PlayerRotation(velocity, 1f);
         }
         transform.position = ObjectOnNextPos(nextPos);
     }
@@ -94,12 +94,41 @@ public class PlayerMove : MonoBehaviour
     }
 
     //データ上の場所変更
-    private void UpdateData()
+    public void UpdateData()
     {
         Vector3Int pos = Utility.PositionToData(transform.position);
-        playerTask.position = pos;
+        playerTask.pos = pos;
 
-        //場所が変更されたら変更時の処理を行う
-        playerTask.objectChoice.UpdatePos(playerTask.position);
+        //変更時の処理を行う
+        playerTask.objectChoice.UpdatePos(playerTask.pos);
+    }
+
+    //物を動かしたりするときに使う
+    public IEnumerator NowPosMoveAndRotation(Vector3Int nextPos,Vector3Int fastMasu)
+    {
+        playerTask.gameTask.eventCount++;
+
+        Vector3 movePos = Utility.DataToPosition(fastMasu);
+        Vector3 velocity = movePos - transform.position;
+        
+        while (transform.position != movePos)
+        {
+            PlayerRotation(velocity, Time.fixedDeltaTime / Time.deltaTime);
+            transform.position = Vector3.MoveTowards(transform.position, movePos, MoveSpeed * Time.deltaTime);
+            yield return null;
+        }
+
+        if (nextPos == transform.position)
+            yield break;
+
+        velocity = Utility.DataToPosition(nextPos) - transform.position;
+        while (transform.rotation != Quaternion.LookRotation(velocity))
+        {
+            PlayerRotation(velocity, Time.fixedDeltaTime / Time.deltaTime);
+            yield return null;
+        }
+
+        playerTask.gameTask.eventCount--;
+        yield break;
     }
 }

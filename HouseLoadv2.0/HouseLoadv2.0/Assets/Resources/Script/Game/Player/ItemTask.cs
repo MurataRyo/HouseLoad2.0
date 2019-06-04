@@ -25,9 +25,11 @@ public class ItemTask : MonoBehaviour
         for (int i = 0; i < num; i++)
         {
             Sprite sprite = Resources.Load<Sprite>(GetPath.Item + "/" + Enum.GetName(typeof(Utility.ItemId), i));
-
-            if (num == (int)Utility.ItemId.Baketu)
+            
+            if (i == (int)Utility.ItemId.Baketu)
+            {
                 items[i] = new ItemWater(itemNum[i], i, sprite);
+            }
             else
                 items[i] = new Item(itemNum[i], i, sprite);
         }
@@ -74,6 +76,7 @@ public class Item
             return;
 
         bool flag = num != 0;
+        text.text = num.ToString();
         if (text.gameObject.activeInHierarchy != flag)
         {
             text.gameObject.SetActive(flag);
@@ -95,7 +98,6 @@ class ItemWater : Item
     public ItemWater(int num, int itemId, Sprite sprite) : base(num, itemId, sprite)
     {
         waterSprite = Resources.Load<Sprite>(GetPath.ExItem + "/WaterBaketu");
-        Debug.Log(waterSprite);
         UseUpdate();
     }
 

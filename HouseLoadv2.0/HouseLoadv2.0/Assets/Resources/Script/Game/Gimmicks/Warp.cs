@@ -6,14 +6,16 @@ public class Warp : Gimmick
 {
     [HideInInspector] public int number;
     [HideInInspector] public Warp warpPos;
-    [HideInInspector] public Vector3[] lineVetex;
+    [HideInInspector] public Vector3[] lineVertex;
     public BesieData besieData;
     public WarpLine warpLine;
+    private bool lineCreateFlag;    //どちらがラインを引いたほうか判断するため
 
     public override void Start()
     {
         base.Start();
-
+        MapId = (int)Utility.MapId.Warp;
+        lineCreateFlag = false;
         //ワープ先の指定
         foreach (MapObject mOb in gameTask.mapObjects)
         {
@@ -30,9 +32,40 @@ public class Warp : Gimmick
 
             if (warpPos.warpPos != null)
             {
+                lineCreateFlag = true;
                 CreateLine(transform.position, warpPos.transform.position);
             }
         }
+    }
+
+    public override IEnumerator Use(int itemNum)
+    {
+        gameTask.moveObjectTask.MoveObject(WarpMove(), true);
+        yield break;
+    }
+
+    public MoveObject WarpMove()
+    {
+        Vector3[] poss;
+
+        if(lineCreateFlag)
+        {
+            poss = besieData.Positions(20);
+        }
+        else
+        {
+            Vector3[] vec3s = warpPos.besieData.Positions(20);
+            poss = new Vector3[vec3s.Length];
+            for(int i = 0;i < vec3s.Length;i++)
+            {
+                poss[i] = vec3s[vec3s.Length - i　-1];
+            }
+        }
+
+        GameObject player = gameTask.playerTask.gameObject;
+
+        MoveObject moveObject = new MoveObject(player, poss, 5f);
+        return moveObject;
     }
 
     public override void UseSet()
@@ -67,10 +100,10 @@ public class Warp : Gimmick
 
         line.alignment = LineAlignment.View;
 
-        lineVetex = LinePath(start, end);
+        lineVertex = LinePath(start, end);
 
-        line.positionCount = lineVetex.Length;
-        line.SetPositions(lineVetex);
+        line.positionCount = lineVertex.Length;
+        line.SetPositions(lineVertex);
 
         Color lineColor = new Color(0.4f, 0.6f, 0.5f, 0.8f);
 

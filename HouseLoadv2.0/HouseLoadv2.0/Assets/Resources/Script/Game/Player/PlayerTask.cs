@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class PlayerTask : MonoBehaviour
 {
-    PlayerMove playerMove;
+    public PlayerMove playerMove;
     public ObjectChoice objectChoice;
 
     public ControllerTask controllerTask;
     public GameObject mainCamera;
     public GameTask gameTask;
 
-    public Vector3Int position;
+    public Vector3Int pos;
     // Start is called before the first frame update
     void Awake()
     {
@@ -22,7 +22,7 @@ public class PlayerTask : MonoBehaviour
         objectChoice = gameObject.AddComponent<ObjectChoice>();
         gameTask = Utility.GetGameTask();
 
-        position  = Utility.PositionToData(transform.position);
+        pos  = Utility.PositionToData(transform.position);
     }
 
     void Start()

@@ -74,15 +74,17 @@ public class StageCreateTask : MonoBehaviour
                     //地上に置くオブジェクトならtrue
                     if (Array.IndexOf(Special.ThisUnder, mapId) == -1)
                     {
-                        CreateObject((y * Y_Scale) + 1, -z * ZX_Scale, x * ZX_Scale, objectId, customId, Special, mapObjects, floor);
+                        Vector3 pos = Utility.DataToPosition(new Vector3Int(y, z, x));
+                        CreateObject(pos, objectId, customId, Special, mapObjects, floor, false);
                         //オブジェクトの下にブロックを置くものならtrue
                         if (Array.IndexOf(Special.InUnder, mapId) != -1)
-                            CreateObject(y * Y_Scale, -z * ZX_Scale, x * ZX_Scale, (int)Utility.ObjectId.Ground, 0, Special, mapObjects, floor);
+                            CreateObject(pos, (int)Utility.ObjectId.Ground, 0, Special, mapObjects, floor, true);
                     }
                     //地面に置くオブジェクト
                     else
                     {
-                        CreateObject(y * Y_Scale, -z * ZX_Scale, x * ZX_Scale, objectId, 0, Special, mapObjects, floor);
+                        Vector3 pos = Utility.DataToPosition(new Vector3Int(y, z, x));
+                        CreateObject(pos, objectId, 0, Special, mapObjects, floor, true);
                     }
                 }
             }
@@ -101,14 +103,18 @@ public class StageCreateTask : MonoBehaviour
         GetComponent<ItemTask>().ItemCreate(num);
     }
 
-    //オブジェクトの生成
-    public void CreateObject(int yPos, int zPos, int xPos, int objectId, int customId, SpecialObject Special, List<MapObject> mapObjects, GameObject parentObj)
+    //オブジェクトの生成   　　　　　　　　　　　　　　　　　　　　　　　　　新規のSpecoalでOK                                親                   地面かどうか
+    public void CreateObject(Vector3 position, int objectId, int customId, SpecialObject Special, List<MapObject> mapObjects, GameObject parentObj, bool isGround)
     {
         if (objects == null)
             objects = ObjectsLoad();
 
         GameObject obj = Instantiate(objects[objectId]);
-        obj.transform.position = new Vector3Int(xPos, yPos, zPos);
+        if (isGround)
+        {
+            position -= Vector3.up;
+        }
+        obj.transform.position = position;
 
         if (objectId != (int)Utility.ObjectId.Player)
         {
@@ -177,6 +183,7 @@ public class SpecialObject
     public int[] Kinematic;     //MapObjectsにいれないもの
     public int[] Block;         //プレイヤーが通れないところ
     public int[] ChoiceObject;  //選択可能なオブジェクト
+    public int[] FallObject;    //落下可能なオブジェクト
 
     public SpecialObject()
     {
@@ -228,5 +235,10 @@ public class SpecialObject
                 (int)Utility.MapId.Hole,
                 (int)Utility.MapId.Warp
             };
+
+        FallObject = new int[]
+        {
+                (int)Utility.MapId.Ground,
+        };
     }
 }

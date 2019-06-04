@@ -7,12 +7,13 @@ public class Gimmick : MonoBehaviour
     public UseBase useBase;
     public GameTask gameTask;
     public ItemTask itemTask;
+    public int MapId;
 
     // Start is called before the first frame update
     public virtual void Start()
     {
         gameTask = Utility.GetGameTask();
-        itemTask = Utility.GetTaskObject().GetComponent<ItemTask>(); 
+        itemTask = Utility.GetTaskObject().GetComponent<ItemTask>();
         UseSet();
     }
 
@@ -26,9 +27,14 @@ public class Gimmick : MonoBehaviour
         return null;
     }
 
+    //基本形
     public virtual bool UseIf(int itemNum)
     {
-        return false;
+        if (itemNum == -1)
+            return true;
+
+        Item item = itemTask.items[itemNum];
+        return item.num >= 1;
     }
 }
 

@@ -11,13 +11,13 @@ public class ChoiceUi : MonoBehaviour
     private GameUiTask uiTask;
     private Vector2 basePos;
     private Text[] text;
-    private GameObject choiceMark;
+    public GameObject choiceMark;
     private const float uiInterval = 75f;
     private int choiceNum;
     private bool[] flag;
     private ObjectChoice objectChoice;
 
-    private bool okFlag;
+    private bool okFlag;    //これがないと決定と選択の1回で処理を行ってしまう
 
     private void Start()
     {
@@ -26,13 +26,13 @@ public class ChoiceUi : MonoBehaviour
         uiTask = Utility.GetTaskObject().GetComponent<GameUiTask>();
 
         Sprite sprite = Resources.Load<Sprite>(GetPath.Image + "/choice");
-        choiceMark = uiTask.NewImageUi(sprite,Vector2.zero,Vector2.one * 50f).gameObject;
+        choiceMark = uiTask.NewImageUi(sprite, Vector2.zero, Vector2.one * 50f).gameObject;
         choiceMark.transform.eulerAngles = Vector3.forward * 90f;
         choiceMark.SetActive(false);
         objectChoice = GameObject.FindGameObjectWithTag("Player").GetComponent<ObjectChoice>();
     }
 
-
+    //初期化
     public void Reset(Gimmick choiceGimmick)
     {
         okFlag = false;
@@ -45,6 +45,7 @@ public class ChoiceUi : MonoBehaviour
         UiAdd();
     }
 
+    //終了時の処理
     private void End()
     {
         activeFlag = false;
@@ -55,7 +56,7 @@ public class ChoiceUi : MonoBehaviour
 
     private void Enter()
     {
-       StartCoroutine(choiceGimmick.Use(choiceNum));
+        StartCoroutine(choiceGimmick.Use(choiceGimmick.useBase.itemNum[choiceNum]));
     }
 
     private void UiAdd()
@@ -65,7 +66,7 @@ public class ChoiceUi : MonoBehaviour
         flag = new bool[textNum];
         for (int i = 0; i < textNum; i++)
         {
-            flag[i] = choiceGimmick.UseIf(i);   //ここに使えるかどうかの条件式をかく
+            flag[i] = choiceGimmick.UseIf(choiceGimmick.useBase.itemNum[i]);   //実行できるかどうか
             Color color = flag[i] ? new Color(0f, 0f, 0f, 1f) : new Color(0.3f, 0.3f, 0.3f, 1f);
             string message = flag[i] ? choiceGimmick.useBase.message[i] : choiceGimmick.useBase.noMessage[i];
             Vector2 pos = basePos - new Vector2(0f, uiInterval * i);
@@ -93,17 +94,19 @@ public class ChoiceUi : MonoBehaviour
     }
 
     private void Update()
-    {
-        if (!activeFlag)
+    {   
+        //                  このUIで1カウントは進んでいるから
+        if (!activeFlag || gameTask.eventCount > 1)
             return;
 
-        if(gameTask.controllerTask.BackButton())
+        if (gameTask.controllerTask.BackButton())
         {
             End();
             return;
         }
-        
-        if(gameTask.controllerTask.EnterButton() && flag[choiceNum] && okFlag)
+
+        //決定
+        if (gameTask.controllerTask.EnterButton() && flag[choiceNum] && okFlag)
         {
             End();
             Enter();

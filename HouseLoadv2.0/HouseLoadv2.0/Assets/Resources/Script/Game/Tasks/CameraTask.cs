@@ -10,7 +10,7 @@ public class CameraTask : MonoBehaviour
     public Vector2 angle;
     public const float Range = 4f;
     public Vector2 position = Vector2.zero;
-    private float RotateSpeed = 50f;
+    private float RotateSpeed = 90f;
 
     private BaseCamera baseCamera;
     // Start is called before the first frame update

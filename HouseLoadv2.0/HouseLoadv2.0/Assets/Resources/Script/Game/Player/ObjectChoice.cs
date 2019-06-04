@@ -7,9 +7,9 @@ public class ObjectChoice : MonoBehaviour
 {
     private ChoiceUi choiceUi;
     public PlayerTask playerTask;
-    private GameObject choiceMark;
-    private List<ChoiceClass> choiceObjects; //選択可能なオブジェクト
-    private int choiceNum;                   //選択しているオブジェクト※choiceObjectsの配列番号
+    public GameObject choiceMark;
+    public List<ChoiceClass> choiceObjects; //選択可能なオブジェクト
+    public int choiceNum;                   //選択しているオブジェクト※choiceObjectsの配列番号
 
     private void Awake()
     {
@@ -35,7 +35,12 @@ public class ObjectChoice : MonoBehaviour
         if (choiceObjects.Count == 0 || playerTask.gameTask.eventCount != 0)
             return;
 
-        choiceUi.Reset(choiceObjects[choiceNum].ThisObj().GetComponent<Gimmick>());
+        //ワープの場合選択時の移動する場所が違うための式
+        Gimmick gimmick = choiceObjects[choiceNum].ThisObj().GetComponent<Gimmick>();
+        Vector3Int pos = gimmick.MapId == (int)Utility.MapId.Warp ? choiceObjects[choiceNum].pos : playerTask.pos; 
+
+        choiceUi.Reset(gimmick);
+        playerTask.playerMove.StartCoroutine(playerTask.playerMove.NowPosMoveAndRotation(choiceObjects[choiceNum].pos,pos));
     }
 
     //選択の変更
@@ -60,6 +65,9 @@ public class ObjectChoice : MonoBehaviour
     //マスが変更されたとき
     public void UpdatePos(Vector3Int newPos)
     {
+        if (playerTask.gameTask.eventCount != 0)
+            return;
+
         NewChoiceObject(newPos);
         choiceNum = 0;
 
@@ -67,12 +75,37 @@ public class ObjectChoice : MonoBehaviour
     }
 
     //choiceObjectの更新
-    public void NewChoiceObject( Vector3Int newPos)
+    public void NewChoiceObject(Vector3Int newPos)
     {
         choiceObjects = new List<ChoiceClass>();
         AddChoicePos(newPos);
-        AddChoicePos(Utility.PositionToData(playerTask.gameObject.transform.position + playerTask.gameObject.transform.forward));
+        AddChoicePos(FowardPos(newPos, playerTask.gameObject.transform.position + playerTask.gameObject.transform.forward));
         ChoicePosSort(newPos);
+    }
+
+    //正面の座標を取る※今いる地点からの4方向のみ
+    public Vector3Int FowardPos(Vector3Int nowPos, Vector3 pos)
+    {
+        Vector3 returnVec3 = Vector3.zero;
+        Vector3[] poss = new Vector3[4];
+        Vector3 nowPos1 = Utility.DataToPosition(nowPos);
+        poss[0] = nowPos1 + Vector3.right;
+        poss[1] = nowPos1 + Vector3.left;
+        poss[2] = nowPos1 + Vector3.forward;
+        poss[3] = nowPos1 + Vector3.back;
+
+        float minRange = Mathf.Infinity;
+
+        for (int i = 0; i < 4; i++)
+        {
+            float range = (pos - poss[i]).magnitude;
+            if (minRange > range)
+            {
+                minRange = range;
+                returnVec3 = poss[i];
+            }
+        }
+        return Utility.PositionToData(returnVec3);
     }
 
     //選択可能マスを追加
@@ -87,7 +120,7 @@ public class ObjectChoice : MonoBehaviour
         if (mapId == -1)
             return;
 
-        ChoiceClass choiceObject = new ChoiceClass(pos, mapId);
+        ChoiceClass choiceObject = new ChoiceClass(pos, playerTask.gameTask.stageData[pos.x][pos.y][pos.z]);
         choiceObjects.Add(choiceObject);
     }
 
@@ -102,7 +135,7 @@ public class ObjectChoice : MonoBehaviour
             for (int i = count; i < choiceObjects.Count; i++)
             {
                 //centerに近いほど先に選択される※キャラの向いているマス
-                Vector3 centerPos = Utility.DataToPosition(newPos)  + transform.forward;
+                Vector3 centerPos = Utility.DataToPosition(newPos) + transform.forward;
                 if ((Utility.DataToPosition(choiceObject.pos) - centerPos).magnitude < (Utility.DataToPosition(choiceObjects[i].pos) - centerPos).magnitude)
                 {
                     choiceObject.number++;

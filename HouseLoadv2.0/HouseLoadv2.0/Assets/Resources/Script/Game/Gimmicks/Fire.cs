@@ -8,6 +8,7 @@ public class Fire : Gimmick
     public override void Start()
     {
         base.Start();
+        MapId = (int)Utility.MapId.Fire;
     }
 
     public override void UseSet()
@@ -19,15 +20,16 @@ public class Fire : Gimmick
     {
         Item item = itemTask.items[(int)Utility.ItemId.Baketu];
         item.num--;
-        item.TextUpdate();
+        item.UseUpdate();
 
-        gameTask.DeleteObject(Utility.PositionToData(transform.position), (int)Utility.MapId.Ground);
-
+        gameTask.DeleteObject(Utility.PositionToData(transform.position), (int)Utility.MapId.Ground,(int)Utility.ObjectId.Fire,GameTask.CreateData.noCreate);
+        
         yield break;
     }
 
     public override bool UseIf(int itemNum)
     {
+        //水入りバケツでなければならない
         if (itemTask.items[(int)Utility.ItemId.Baketu].num != 2)
             return false;
 
