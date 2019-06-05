@@ -20,7 +20,7 @@ public class PlayerMove : MonoBehaviour
     //プレイヤーの回転　　　　　　　　移動方向
     public void PlayerRotation(Vector3 velocity, float speed)
     {
-        transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(velocity), (360f / RotationTime) * Time.fixedDeltaTime * speed);
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(velocity), (360f / RotationTime) * Time.deltaTime * speed);
     }
 
     public void Move()
@@ -36,7 +36,7 @@ public class PlayerMove : MonoBehaviour
             playerTask.mainCamera.transform.right * vec2.x).normalized;
 
         //時間で管理する
-        velocity *= Time.fixedDeltaTime;
+        velocity *= Time.deltaTime;
 
         //移動後の地点を取得する
         Vector3 nextPos = transform.position + new Vector3(velocity.x, 0f, velocity.z) * MoveSpeed;
@@ -47,7 +47,8 @@ public class PlayerMove : MonoBehaviour
             UpdateData();
             PlayerRotation(velocity, 1f);
         }
-        transform.position = ObjectOnNextPos(nextPos);
+        //transform.position = ObjectOnNextPos(nextPos);
+        transform.position = nextPos;
     }
 
     //物の計算をした次の座標

@@ -50,14 +50,7 @@ public class DrawingFloorTask : MonoBehaviour
 
     public void Update()
     {
-        for(int i = 48;i < 48 + 6;i++)
-        {
-            if (Input.GetKeyDown((KeyCode)i))
-            {
-                StopDraw(i-48);
-                ResumeDraw(i-48);
-            }
-        }
+
     }
 
     private void WarpObjLoad()

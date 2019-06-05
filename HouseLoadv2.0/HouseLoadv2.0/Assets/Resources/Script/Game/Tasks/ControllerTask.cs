@@ -55,11 +55,16 @@ public class ControllerTask : MonoBehaviour
 
     public bool BackButton()
     {
-        return Input.GetKeyDown(KeyCode.Q);
+        return Input.GetKeyDown(KeyCode.Z);
+    }
+
+    public bool CameraModeChangeButton()
+    {
+        return Input.GetKeyDown(KeyCode.X);
     }
 
     public bool SerectKey(bool flag)
     {
-        return Input.GetKeyDown(flag ? KeyCode.O : KeyCode.L);
+        return Input.GetKeyDown(flag ? KeyCode.Q : KeyCode.E);
     }
 }

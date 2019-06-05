@@ -22,7 +22,7 @@ public class PlayerTask : MonoBehaviour
         objectChoice = gameObject.AddComponent<ObjectChoice>();
         gameTask = Utility.GetGameTask();
 
-        pos  = Utility.PositionToData(transform.position);
+        pos = Utility.PositionToData(transform.position);
     }
 
     void Start()
@@ -34,7 +34,7 @@ public class PlayerTask : MonoBehaviour
     void Update()
     {
         objectChoice.ChoiceChange();
-
+        playerMove.Move();
         if (Input.GetKeyDown(KeyCode.K))
         {
             Vector3Int[] vec3 = Utility.PositionToData(transform.position, 0.3f);
@@ -47,6 +47,5 @@ public class PlayerTask : MonoBehaviour
 
     void FixedUpdate()
     {
-        playerMove.Move();
     }
 }
