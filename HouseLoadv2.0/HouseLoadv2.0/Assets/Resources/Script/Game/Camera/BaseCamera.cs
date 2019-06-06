@@ -10,14 +10,8 @@ public class BaseCamera : MonoBehaviour
     public Vector3 targetPos;           //このカメラが目指している場所
     public int nowFloor;
 
-    public const float MinAngleX = 20f;
-    public const float MaxAngleX = 60f;
-    public Vector2 angle;
-    private float RotateSpeed = 90f;
-
     public virtual void Awake()
     {
-        angle = new Vector2(40f, 0f);
         cameraTask = Camera.main.GetComponent<CameraTask>();
     }
 
@@ -33,12 +27,11 @@ public class BaseCamera : MonoBehaviour
     {
         targetPos = baseCamera.targetPos;
         nowFloor = baseCamera.nowFloor;
-        angle = baseCamera.angle;
     }
 
     public virtual void NextPos(Vector3 nextPos, float cameraSpeed)
     {
-        targetPos = nextPos + (-transform.forward * CameraTask.Range);
+        targetPos = nextPos + (-transform.forward * cameraTask.CameraRange());
         transform.position = Vector3.MoveTowards(transform.position, targetPos, cameraSpeed * Time.deltaTime);
         nowFloor = NowFloor(nextPos);
 
@@ -54,30 +47,6 @@ public class BaseCamera : MonoBehaviour
         return ((int)(nextPos.y + 2.0f)) / 4;
     }
 
-    public virtual void NextAngle()
-    {
-        if (Input.GetKey(KeyCode.RightArrow))
-        {
-            angle.y += Time.deltaTime * RotateSpeed;
-        }
-        if (Input.GetKey(KeyCode.LeftArrow))
-        {
-            angle.y -= Time.deltaTime * RotateSpeed;
-        }
-        if (Input.GetKey(KeyCode.UpArrow))
-        {
-            angle.x -= Time.deltaTime * RotateSpeed;
-        }
-        if (Input.GetKey(KeyCode.DownArrow))
-        {
-            angle.x += Time.deltaTime * RotateSpeed;
-        }
-
-        angle.x = Mathf.Clamp(angle.x, MinAngleX, MaxAngleX);
-
-        transform.eulerAngles = new Vector3(angle.x, angle.y, 0f);
-    }
-
     public virtual void ChangeCamera()
     {
 
@@ -86,5 +55,15 @@ public class BaseCamera : MonoBehaviour
     public virtual void MoveCamera()
     {
 
+    }
+
+    public void AngleUpdate()
+    {
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.Euler(NextAngle()), (360f / 2) * Time.deltaTime);
+    }
+
+    public virtual Vector3 NextAngle()
+    {
+        return Vector3.zero;
     }
 }

@@ -37,7 +37,8 @@ public class Utility : MonoBehaviour
         House,
         Water,
         Fire,
-        Warp
+        Warp,
+        IceBlock
     }
 
     public enum MapId
@@ -52,7 +53,8 @@ public class Utility : MonoBehaviour
         House,
         Water,
         Fire,
-        Warp
+        Warp,
+        IceBlock
     }
     #endregion
 

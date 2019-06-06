@@ -40,12 +40,13 @@ public class PlayerTask : MonoBehaviour
             Vector3Int[] vec3 = Utility.PositionToData(transform.position, 0.3f);
             foreach (Vector3Int i in vec3)
             {
-                Debug.Log(i);
+                Debug.Log((Utility.MapId)gameTask.stageData[i.x][i.y][i.z]);
             }
         }
     }
 
     void FixedUpdate()
     {
+
     }
 }

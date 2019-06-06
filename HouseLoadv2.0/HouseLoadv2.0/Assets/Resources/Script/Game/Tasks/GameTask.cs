@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class GameTask : MonoBehaviour
 {
@@ -105,9 +106,22 @@ public class GameTask : MonoBehaviour
         return null;
     }
 
+    public Gimmick[] GetGimmcks(Utility.ObjectId[] objctId)
+    {
+        List<Gimmick> retrunGimmick = new List<Gimmick>(); 
+        foreach(MapObject mapObject in mapObjects)
+        {
+            if(-1 != Array.IndexOf(objctId, (Utility.ObjectId)mapObject.objectId))
+            {
+                retrunGimmick.Add(mapObject.go.GetComponent<Gimmick>());
+            }
+        }
+        return retrunGimmick.ToArray();
+    }
+
     public bool InIfStageData(Vector3Int pos)
     {
-        //プレイヤーが範囲外にいる場合
+        //範囲外にいる場合
         if (pos.x < 0 || pos.y < 0 || pos.z < 0 ||
             pos.x >= stageData.Length ||
             pos.y >= stageData[pos.x].Length ||

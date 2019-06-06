@@ -20,7 +20,7 @@ public class FreeCamera : BaseCamera
 
         //移動方向の取得
         Vector3 velocity =
-            (new Vector3(transform.forward.x, 0f, transform.forward.z).normalized * vec2.y +
+            (transform.up * vec2.y +
            transform.right * vec2.x).normalized;
 
         vec2 = new Vector2(velocity.x, velocity.z);
@@ -44,13 +44,18 @@ public class FreeCamera : BaseCamera
 
     public override void MoveCamera()
     {
+        AngleUpdate();
         NextPosUpdate();
-        NextAngle();
         NextPos(NextPos(), 10f);
     }
 
     public override int NowFloor(Vector3 nextPos)
     {
         return ((int)nextPos.y) / 4;
+    }
+
+    public override Vector3 NextAngle()
+    {
+        return new Vector3(90f, 0f, 0f);
     }
 }

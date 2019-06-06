@@ -208,8 +208,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 0}
-  angle: {x: 0, y: 0}
-  position: {x: 0, y: 0}
+  baseCamera: {fileID: 0}
 --- !u!1 &1422657996
 GameObject:
   m_ObjectHideFlags: 0
@@ -257,8 +256,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   eventCount: 0
   textEvent: 0
+  playerTask: {fileID: 0}
   uiTask: {fileID: 0}
   controllerTask: {fileID: 0}
+  moveObjectTask: {fileID: 0}
 --- !u!114 &1422657999
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -9,6 +9,20 @@ public class Fire : Gimmick
     {
         base.Start();
         MapId = (int)Utility.MapId.Fire;
+        IceMelt();
+    }
+
+    public void IceMelt()
+    {
+        Gimmick[] gimmicks = gameTask.GetGimmcks(new Utility.ObjectId[] { Utility.ObjectId.IceBlock });
+        foreach(Gimmick gimmick in gimmicks)
+        {
+            IceBlock ice = gimmick.gameObject.GetComponent<IceBlock>();
+            if(ice.MeltMoveIf(Utility.PositionToData(transform.position), Utility.PositionToData(ice.transform.position)))
+            {
+                gameTask.moveObjectTask.MoveObject(ice.MeltMove(ice.gameObject.transform.position),true);
+            }
+        }
     }
 
     public override void UseSet()
@@ -22,8 +36,8 @@ public class Fire : Gimmick
         item.num--;
         item.UseUpdate();
 
-        gameTask.DeleteObject(Utility.PositionToData(transform.position), (int)Utility.MapId.Ground,(int)Utility.ObjectId.Fire,GameTask.CreateData.noCreate);
-        
+        gameTask.DeleteObject(Utility.PositionToData(transform.position), (int)Utility.MapId.Ground, (int)Utility.ObjectId.Fire, GameTask.CreateData.noCreate);
+
         yield break;
     }
 

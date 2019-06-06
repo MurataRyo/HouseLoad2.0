@@ -195,7 +195,8 @@ public class SpecialObject
         (int)Utility.MapId.Wall,
         (int)Utility.MapId.Warp,
         (int)Utility.MapId.Wood,
-        (int)Utility.MapId.WoodBlock
+        (int)Utility.MapId.WoodBlock,
+        (int)Utility.MapId.IceBlock
         };
 
         ThisUnder = new int[] {
@@ -222,7 +223,8 @@ public class SpecialObject
                 (int)Utility.ObjectId.Water,
                 (int)Utility.ObjectId.Wood,
                 (int)Utility.ObjectId.WoodBlock,
-                (int)Utility.ObjectId.Hole
+                (int)Utility.ObjectId.Hole,
+                (int)Utility.ObjectId.IceBlock
             };
 
         ChoiceObject = new int[]
@@ -233,7 +235,8 @@ public class SpecialObject
                 (int)Utility.MapId.Wood,
                 (int)Utility.MapId.WoodBlock,
                 (int)Utility.MapId.Hole,
-                (int)Utility.MapId.Warp
+                (int)Utility.MapId.Warp,
+                (int)Utility.MapId.IceBlock
             };
 
         FallObject = new int[]

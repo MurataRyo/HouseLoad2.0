@@ -19,7 +19,7 @@ public class MoveObjectTask : MonoBehaviour
 
     public IEnumerator Move(MoveObject moveObject, bool EventIf)
     {
-        if(choiceUi == null)
+        if (choiceUi == null)
         {
             choiceUi = gameTask.playerTask.objectChoice.choiceMark;
         }
@@ -31,13 +31,19 @@ public class MoveObjectTask : MonoBehaviour
             choiceUi.SetActive(false);
         }
 
+        if (moveObject.startEvent != null)
+            yield return Move(moveObject.startEvent,EventIf);
+
         yield return moveObject.ie;
+
+        if (moveObject.endEvent != null)
+            yield return Move(moveObject.endEvent, EventIf);
 
         if (EventIf)
         {
             uiCount--;
             gameTask.eventCount--;
-            if(uiCount == 0)
+            if (uiCount == 0)
             {
                 choiceUi.SetActive(true);
             }
@@ -68,7 +74,20 @@ public class MoveObjectTask : MonoBehaviour
 
         foreach (MoveObject moveObject in moveObjects)
         {
+            if (moveObject.startEvent != null)
+                yield return Move(moveObject.startEvent, EventIf);
+        }
+
+        foreach (MoveObject moveObject in moveObjects)
+        {
             yield return moveObject.ie;
+        }
+
+
+        foreach (MoveObject moveObject in moveObjects)
+        {
+            if (moveObject.endEvent != null)
+                yield return Move(moveObject.endEvent, EventIf);
         }
 
         if (EventIf)
@@ -89,7 +108,8 @@ public class MoveObjectTask : MonoBehaviour
 public class MoveObject
 {
     public IEnumerator ie;
-
+    public MoveObject endEvent;
+    public MoveObject startEvent;
     //          移動するオブジェクト          通過点         1秒で進む距離
     public MoveObject(GameObject go, Vector3[] movePoints, float moveSpeed)
     {
