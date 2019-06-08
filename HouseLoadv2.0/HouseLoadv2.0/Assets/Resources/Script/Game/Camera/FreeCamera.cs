@@ -39,7 +39,7 @@ public class FreeCamera : BaseCamera
 
     private Vector3 NextPos()
     {
-        return new Vector3(nextPos.x, floor * 4 + 1, nextPos.y);
+        return new Vector3(nextPos.x, floor * 4, nextPos.y);
     }
 
     public override void MoveCamera()

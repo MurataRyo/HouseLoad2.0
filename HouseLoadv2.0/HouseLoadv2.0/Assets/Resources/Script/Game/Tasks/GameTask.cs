@@ -15,7 +15,7 @@ public class GameTask : MonoBehaviour
     public ControllerTask controllerTask;
     public MoveObjectTask moveObjectTask;
     private StageCreateTask stageCreateTask;
-    private DrawingFloorTask floorTask;
+    public DrawingFloorTask drawFloorTask;
     void Awake()
     {
         moveObjectTask = gameObject.AddComponent<MoveObjectTask>();
@@ -27,7 +27,7 @@ public class GameTask : MonoBehaviour
         textEvent = false;
         eventCount = 0;
         controllerTask = GetComponent<ControllerTask>();
-        floorTask = GetComponent<DrawingFloorTask>();
+        drawFloorTask = GetComponent<DrawingFloorTask>();
     }
 
     // Start is called before the first frame update
@@ -89,7 +89,7 @@ public class GameTask : MonoBehaviour
         //下にブロックを置くもの
         SpecialObject Special = new SpecialObject();
         Vector3 position = Utility.DataToPosition(new Vector3Int(pos.x, pos.y, pos.z));
-        stageCreateTask.CreateObject(position, nextData, 0, Special, mapObjects, floorTask.floorObjects[pos.x], createData == CreateData.groundCreate);
+        stageCreateTask.CreateObject(position, nextData, 0, Special, mapObjects, drawFloorTask.floorObjects[pos.x], createData == CreateData.groundCreate);
     }
 
     public MapObject GetMapObj(Vector3Int pos, int objectId)

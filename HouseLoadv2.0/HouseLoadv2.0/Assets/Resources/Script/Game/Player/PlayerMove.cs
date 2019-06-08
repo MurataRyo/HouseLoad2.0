@@ -47,8 +47,8 @@ public class PlayerMove : MonoBehaviour
             UpdateData();
             PlayerRotation(velocity, 1f);
         }
-        //transform.position = ObjectOnNextPos(nextPos);
-        transform.position = nextPos;
+        transform.position = ObjectOnNextPos(nextPos);
+        //transform.position = nextPos;
     }
 
     //物の計算をした次の座標

@@ -43,18 +43,18 @@ public class Utility : MonoBehaviour
 
     public enum MapId
     {
-        Hole,
-        Player,
-        Ground,
-        Wood,
-        WoodBlock,
-        Stone,
-        Wall,
-        House,
-        Water,
-        Fire,
-        Warp,
-        IceBlock
+        Hole = 0,
+        Player = 1,
+        Ground = 2,
+        Wood = 3,
+        WoodBlock = 4,
+        Stone = 5,
+        Wall = 6,
+        House = 7,
+        Water = 8,
+        Fire = 9,
+        Warp = 10,
+        IceBlock = 11
     }
     #endregion
 

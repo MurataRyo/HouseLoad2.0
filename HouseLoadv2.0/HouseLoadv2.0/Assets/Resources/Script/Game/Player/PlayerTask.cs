@@ -12,6 +12,7 @@ public class PlayerTask : MonoBehaviour
     public GameTask gameTask;
 
     public Vector3Int pos;
+    public Vector3Int posLog;
     // Start is called before the first frame update
     void Awake()
     {
@@ -41,6 +42,18 @@ public class PlayerTask : MonoBehaviour
             foreach (Vector3Int i in vec3)
             {
                 Debug.Log((Utility.MapId)gameTask.stageData[i.x][i.y][i.z]);
+            }
+        }
+    }
+
+    void UpdatePos()
+    {
+        posLog = pos;
+        if(posLog != pos)
+        {
+            if(gameTask.stageData[pos.x][pos.y][pos.z] == (int)Utility.MapId.House)
+            {
+                
             }
         }
     }

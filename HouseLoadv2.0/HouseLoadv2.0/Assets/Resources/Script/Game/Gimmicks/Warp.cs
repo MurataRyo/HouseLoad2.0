@@ -113,7 +113,7 @@ public class Warp : Gimmick
 
     private Vector3[] LinePath(Vector3 start, Vector3 end)
     {
-        const float MAX_HEIGHT = 2.5f;
+        const float MAX_HEIGHT = 1.5f;
         const float ONE_RANGE = 0.05f;
         float maxRange = (start - end).magnitude;
         Vector3 now = start - (end - start).normalized * ONE_RANGE;

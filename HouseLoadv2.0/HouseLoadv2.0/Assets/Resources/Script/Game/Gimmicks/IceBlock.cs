@@ -30,6 +30,7 @@ public class IceBlock : Block
 
     public MoveObject MeltMove(Vector3 pos)
     {
+        transform.localScale = Vector3.one *  0.99f;
         MoveObject mobj = new MoveObject(gameObject, new Vector3[] { pos, pos + Vector3.down }, 1f);
         MoveObject mobj2 = new MoveObject(gameObject, new Vector3[] { pos, pos - Vector3.down }, 0.1f);
         mobj2.ie = Melt();
