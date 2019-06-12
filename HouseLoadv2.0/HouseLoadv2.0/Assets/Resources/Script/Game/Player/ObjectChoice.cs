@@ -152,7 +152,7 @@ public class ObjectChoice : MonoBehaviour
     }
 
     //UIの更新
-    private void ChoiceUiSet()
+    public void ChoiceUiSet()
     {
         if (choiceObjects.Count == 0)
         {

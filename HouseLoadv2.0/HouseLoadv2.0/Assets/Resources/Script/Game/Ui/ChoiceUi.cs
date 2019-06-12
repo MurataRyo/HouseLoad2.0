@@ -95,7 +95,7 @@ public class ChoiceUi : MonoBehaviour
 
     private void Update()
     {   
-        //                  このUIで1カウントは進んでいるから
+        //                  このUIで1カウントは進んでいるから＞１
         if (!activeFlag || gameTask.eventCount > 1)
             return;
 

@@ -16,24 +16,45 @@ public class GameTask : MonoBehaviour
     public MoveObjectTask moveObjectTask;
     private StageCreateTask stageCreateTask;
     public DrawingFloorTask drawFloorTask;
+    public SceneTask sceneTask;
+    private PauseTask pauseTask;
+
+    public static string mapData;
+    public enum GameMode
+    {
+        Main,
+        Pause,
+        Crear
+    }
+    public GameMode gameMode;
+    public GameMode gameModeLog;
+
     void Awake()
     {
+        gameMode = gameModeLog = GameMode.Main;
         moveObjectTask = gameObject.AddComponent<MoveObjectTask>();
         stageCreateTask = gameObject.AddComponent<StageCreateTask>();
         uiTask = gameObject.AddComponent<GameUiTask>();
         mapObjects = new List<MapObject>();
-        stageCreateTask.MapDataCreate(GetPath.Tutorial + "/Stage1", mapObjects, ref stageData);
+        stageCreateTask.MapDataCreate(mapData, mapObjects, ref stageData);
         Special = new SpecialObject();
         textEvent = false;
         eventCount = 0;
         controllerTask = GetComponent<ControllerTask>();
         drawFloorTask = GetComponent<DrawingFloorTask>();
+        sceneTask = GetComponent<SceneTask>();
     }
 
     // Start is called before the first frame update
     void Start()
     {
         playerTask = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerTask>();
+    }
+
+    private void Update()
+    {
+        IfGameModeChange();
+        GameModeUpdate();
     }
 
     //オブジェクトの移動※元々の場所は地面になる
@@ -47,7 +68,7 @@ public class GameTask : MonoBehaviour
     }
 
     //オブジェクトの移動※元々の場所は地面になる
-    public void MoveObject(Vector3Int pos, Vector3Int nextPos, int mapId, int nextMapid,int deleteMapId)
+    public void MoveObject(Vector3Int pos, Vector3Int nextPos, int mapId, int nextMapid, int deleteMapId)
     {
         stageData[pos.x][pos.y][pos.z] = (int)Utility.MapId.Ground;
         stageData[nextPos.x][nextPos.y][nextPos.z] = nextMapid;
@@ -106,12 +127,13 @@ public class GameTask : MonoBehaviour
         return null;
     }
 
+    //IDのオブジェクトを全取得する
     public Gimmick[] GetGimmcks(Utility.ObjectId[] objctId)
     {
-        List<Gimmick> retrunGimmick = new List<Gimmick>(); 
-        foreach(MapObject mapObject in mapObjects)
+        List<Gimmick> retrunGimmick = new List<Gimmick>();
+        foreach (MapObject mapObject in mapObjects)
         {
-            if(-1 != Array.IndexOf(objctId, (Utility.ObjectId)mapObject.objectId))
+            if (-1 != Array.IndexOf(objctId, (Utility.ObjectId)mapObject.objectId))
             {
                 retrunGimmick.Add(mapObject.go.GetComponent<Gimmick>());
             }
@@ -119,6 +141,7 @@ public class GameTask : MonoBehaviour
         return retrunGimmick.ToArray();
     }
 
+    //ステージの中かどうか
     public bool InIfStageData(Vector3Int pos)
     {
         //範囲外にいる場合
@@ -129,5 +152,62 @@ public class GameTask : MonoBehaviour
             return false;
 
         return true;
+    }
+
+    //ゲームモードの変更関連
+    private void IfGameModeChange()
+    {
+        if (gameMode == GameMode.Main && controllerTask.PauseKey())
+        {
+            gameMode = GameMode.Pause;
+            pauseTask = gameObject.AddComponent<PauseTask>();
+        }
+        else if (gameMode == GameMode.Pause && controllerTask.PauseKey())
+            gameMode = GameMode.Main;
+
+        if (gameMode != gameModeLog)
+            ChangeGameMode();
+
+        gameModeLog = gameMode;
+    }
+
+    private void ChangeGameMode()
+    {
+        switch (gameMode)
+        {
+            case GameMode.Main:
+                if (pauseTask != null)
+                    pauseTask.Destroy();
+                Time.timeScale = 1;
+                eventCount--;
+                break;
+
+            case GameMode.Pause:
+                Time.timeScale = 0;
+                eventCount++;
+                break;
+
+            case GameMode.Crear:
+                eventCount++;
+                break;
+        }
+    }
+
+    private void GameModeUpdate()
+    {
+        switch (gameMode)
+        {
+            case GameMode.Main:
+                break;
+
+            case GameMode.Crear:
+
+                if (controllerTask.EnterButton())
+                {
+                    sceneTask.LoadScene(SceneTask.SceneName.Title, true);
+                }
+
+                break;
+        }
     }
 }

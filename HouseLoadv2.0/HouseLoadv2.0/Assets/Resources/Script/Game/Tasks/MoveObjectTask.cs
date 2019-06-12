@@ -45,7 +45,7 @@ public class MoveObjectTask : MonoBehaviour
             gameTask.eventCount--;
             if (uiCount == 0)
             {
-                choiceUi.SetActive(true);
+                gameTask.playerTask.objectChoice.ChoiceUiSet();
             }
         }
 
@@ -114,6 +114,11 @@ public class MoveObject
     public MoveObject(GameObject go, Vector3[] movePoints, float moveSpeed)
     {
         ie = enumerator(go, movePoints, moveSpeed);
+    }
+
+    public MoveObject()
+    {
+
     }
 
     //移動式のコルーチン

@@ -26,14 +26,11 @@ public class FreeCamera : BaseCamera
         vec2 = new Vector2(velocity.x, velocity.z);
         nextPos += vec2 * Time.deltaTime * speed;
 
+        //見る階層の変更
         if (gameTask.controllerTask.SerectKey(true))
-        {
             floor++;
-        }
         else if (gameTask.controllerTask.SerectKey(false))
-        {
             floor--;
-        }
         floor = Mathf.Clamp(floor, 0, gameTask.stageData.Length - 1);
     }
 

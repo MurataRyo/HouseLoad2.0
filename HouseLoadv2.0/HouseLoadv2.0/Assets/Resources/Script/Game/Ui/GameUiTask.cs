@@ -56,4 +56,27 @@ public class GameUiTask : MonoBehaviour
 
         return text;
     }
+
+    //ここでのPosは左上を0,0とする
+    public Text NewTextUi(string str, Vector2 pos, Color color,int fontSize)
+    {
+        GameObject go = new GameObject();
+        go.layer =
+            LayerMask.NameToLayer("UI");
+
+        Text text = go.AddComponent<Text>();
+        text.text = str;
+        text.fontSize = fontSize;
+
+        text.horizontalOverflow = HorizontalWrapMode.Overflow;
+        text.verticalOverflow = VerticalWrapMode.Overflow;
+
+        go.transform.SetParent(Utility.GetCanvas().transform);
+        go.transform.localPosition = pos + new Vector2(-Utility.GameSizeX / 2, Utility.GameSizeY / 2);
+
+        text.color = color;
+        text.font = Resources.Load<Font>(GetPath.Font + "/Font");
+
+        return text;
+    }
 }

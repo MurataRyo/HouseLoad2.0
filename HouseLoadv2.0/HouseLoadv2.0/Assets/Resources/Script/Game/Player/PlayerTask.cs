@@ -46,16 +46,17 @@ public class PlayerTask : MonoBehaviour
         }
     }
 
-    void UpdatePos()
+    public void UpdatePos()
     {
-        posLog = pos;
-        if(posLog != pos)
+        if (posLog != pos)
         {
-            if(gameTask.stageData[pos.x][pos.y][pos.z] == (int)Utility.MapId.House)
+            if (gameTask.stageData[pos.x][pos.y][pos.z] == (int)Utility.MapId.House)
             {
-                
+                MapObject mapObject = gameTask.GetMapObj(pos, (int)Utility.GetObjectId(Utility.MapId.House));
+                mapObject.go.GetComponent<House>().StageCrear();
             }
         }
+        posLog = pos;
     }
 
     void FixedUpdate()
