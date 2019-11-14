@@ -41,6 +41,7 @@ public class IceBlock : Block
 
     private IEnumerator Melt()
     {
+        Debug.Log(Utility.PositionToData(transform.position));
         gameTask.DeleteObject(Utility.PositionToData(transform.position), (int)Utility.MapId.Water, (int)Utility.ObjectId.IceBlock, GameTask.CreateData.groundCreate);
         gameTask.DeleteObject(Utility.PositionToData(transform.position), (int)Utility.MapId.Water, (int)Utility.ObjectId.Ground, GameTask.CreateData.noCreate);
         yield break;

@@ -67,9 +67,4 @@ public class ControllerTask : MonoBehaviour
     {
         return Input.GetKeyDown(flag ? KeyCode.Q : KeyCode.E);
     }
-
-    public bool PauseKey()
-    {
-        return Input.GetKeyDown(KeyCode.Tab);
-    }
 }

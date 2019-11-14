@@ -15,12 +15,10 @@ public class StageCreateTask : MonoBehaviour
     }
 
     //パスからの生成
-    public void MapDataCreate(string stageData, List<MapObject> mapObjects, ref int[][][] mapData)
+    public void MapDataCreate(string path, List<MapObject> mapObjects, ref int[][][] mapData)
     {
-        if (stageData == null)
-            stageData = Resources.Load<TextAsset>(GetPath.Tutorial + "/Stage1").text;
-
-        MapDataToCreateStage(stageData, mapObjects, ref mapData);
+        TextAsset text = Resources.Load<TextAsset>(path);
+        MapDataToCreateStage(text.text, mapObjects, ref mapData);
         gameObject.AddComponent<DrawingFloorTask>();
     }
 

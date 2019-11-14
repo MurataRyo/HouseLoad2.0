@@ -209,7 +209,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 0}
   baseCamera: {fileID: 0}
-  angle: {x: 0, y: 0}
 --- !u!1 &1422657996
 GameObject:
   m_ObjectHideFlags: 0
@@ -222,7 +221,6 @@ GameObject:
   - component: {fileID: 1422657998}
   - component: {fileID: 1422657999}
   - component: {fileID: 1422658000}
-  - component: {fileID: 1422658001}
   m_Layer: 0
   m_Name: Tasks
   m_TagString: Task
@@ -262,9 +260,6 @@ MonoBehaviour:
   uiTask: {fileID: 0}
   controllerTask: {fileID: 0}
   moveObjectTask: {fileID: 0}
-  drawFloorTask: {fileID: 0}
-  gameMode: 0
-  gameModeLog: 0
 --- !u!114 &1422657999
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -289,18 +284,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ea628d86fe10f02468fe829090177be6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1422658001
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1422657996}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 28c59e00723e64a4d83e9afefab46788, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &2081064975

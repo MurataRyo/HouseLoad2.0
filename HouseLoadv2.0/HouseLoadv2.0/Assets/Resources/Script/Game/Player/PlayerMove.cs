@@ -49,8 +49,6 @@ public class PlayerMove : MonoBehaviour
         }
         transform.position = ObjectOnNextPos(nextPos);
         //transform.position = nextPos;
-
-        playerTask.UpdatePos();
     }
 
     //物の計算をした次の座標

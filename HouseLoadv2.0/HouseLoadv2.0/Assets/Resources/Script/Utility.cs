@@ -190,8 +190,7 @@ public class GetPath
     public const string Ui = Prefab + "/Ui";
 
     public const string Txt = "Txt";
-    public const string MapData = Txt + "/MapData";
-    public const string Tutorial = MapData + "/Tutorial";
+    public const string Tutorial = Txt + "/Tutorial";
 
     public const string Font = "Font";
 
