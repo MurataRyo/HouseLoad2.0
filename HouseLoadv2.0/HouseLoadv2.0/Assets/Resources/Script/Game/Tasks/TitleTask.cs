@@ -71,6 +71,7 @@ public class TitleTask : MonoBehaviour
         if(controllerTask.EnterButton())
         {
             GameTask.stageName = texts[nowSelect].name;
+            Debug.Log(GameTask.stageName);
             SceneManager.LoadScene("Main");
         }
     }

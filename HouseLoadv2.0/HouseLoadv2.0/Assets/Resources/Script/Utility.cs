@@ -190,10 +190,6 @@ public class GetPath
     public const string Ui = Prefab + "/Ui";
 
     public const string Txt = "Txt";
-<<<<<<< HEAD
-=======
-    public const string Tutorial = Txt + "/Tutorial";
->>>>>>> parent of e9b2820... タイトル画面　クリア画面　ロード画面の追加
 
     public const string Font = "Font";
 
