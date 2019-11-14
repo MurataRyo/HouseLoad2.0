@@ -42,6 +42,7 @@ public class PlayerTask : MonoBehaviour
 
     void UpdatePos()
     {
+<<<<<<< HEAD
         /*if(posLog != pos)
         {
             if(gameTask.stageData[pos.x][pos.y][pos.z] == (int)Utility.MapId.House)
@@ -66,9 +67,16 @@ public class PlayerTask : MonoBehaviour
                     //ゴール判定
                     playerMove.StartCoroutine(playerMove.NowPosMoveAndRotation(i, i));
                 }
+=======
+        posLog = pos;
+        if(posLog != pos)
+        {
+            if(gameTask.stageData[pos.x][pos.y][pos.z] == (int)Utility.MapId.House)
+            {
+                
+>>>>>>> parent of e9b2820... タイトル画面　クリア画面　ロード画面の追加
             }
         }
-        posLog = pos;
     }
 
     void FixedUpdate()

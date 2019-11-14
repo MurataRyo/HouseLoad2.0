@@ -16,15 +16,22 @@ public class GameTask : MonoBehaviour
     public MoveObjectTask moveObjectTask;
     private StageCreateTask stageCreateTask;
     public DrawingFloorTask drawFloorTask;
+<<<<<<< HEAD
 
     public static string stageName;
+=======
+>>>>>>> parent of e9b2820... タイトル画面　クリア画面　ロード画面の追加
     void Awake()
     {
         moveObjectTask = gameObject.AddComponent<MoveObjectTask>();
         stageCreateTask = gameObject.AddComponent<StageCreateTask>();
         uiTask = gameObject.AddComponent<GameUiTask>();
         mapObjects = new List<MapObject>();
+<<<<<<< HEAD
         stageCreateTask.MapDataCreate(GetPath.Txt + stageName, mapObjects, ref stageData);
+=======
+        stageCreateTask.MapDataCreate(GetPath.Tutorial + "/Stage1", mapObjects, ref stageData);
+>>>>>>> parent of e9b2820... タイトル画面　クリア画面　ロード画面の追加
         Special = new SpecialObject();
         textEvent = false;
         eventCount = 0;
