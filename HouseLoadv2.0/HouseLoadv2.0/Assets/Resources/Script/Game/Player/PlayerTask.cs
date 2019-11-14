@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerTask : MonoBehaviour
 {
@@ -36,26 +37,38 @@ public class PlayerTask : MonoBehaviour
     {
         objectChoice.ChoiceChange();
         playerMove.Move();
-        if (Input.GetKeyDown(KeyCode.K))
-        {
-            Vector3Int[] vec3 = Utility.PositionToData(transform.position, 0.3f);
-            foreach (Vector3Int i in vec3)
-            {
-                Debug.Log((Utility.MapId)gameTask.stageData[i.x][i.y][i.z]);
-            }
-        }
+        UpdatePos();
     }
 
     void UpdatePos()
     {
-        posLog = pos;
-        if(posLog != pos)
+        /*if(posLog != pos)
         {
             if(gameTask.stageData[pos.x][pos.y][pos.z] == (int)Utility.MapId.House)
             {
-                
+                //ゴール判定 
+                playerMove.StartCoroutine(playerMove.NowPosMoveAndRotation(pos, pos));
+            }
+        }*/
+        Vector3Int[] vec3 = Utility.PositionToData(transform.position, 0.25f);
+        if(gameTask.eventCount == 0)
+        {
+            foreach (Vector3Int i in vec3)
+            {
+                if (gameTask.stageData[i.x][i.y][i.z] == (int)Utility.MapId.House)
+                {
+                    if(transform.position == Utility.DataToPosition(i))
+                    {
+                        SceneManager.LoadScene("Clear");
+                        break;
+                    }
+
+                    //ゴール判定
+                    playerMove.StartCoroutine(playerMove.NowPosMoveAndRotation(i, i));
+                }
             }
         }
+        posLog = pos;
     }
 
     void FixedUpdate()

@@ -16,13 +16,15 @@ public class GameTask : MonoBehaviour
     public MoveObjectTask moveObjectTask;
     private StageCreateTask stageCreateTask;
     public DrawingFloorTask drawFloorTask;
+
+    public static string stageName;
     void Awake()
     {
         moveObjectTask = gameObject.AddComponent<MoveObjectTask>();
         stageCreateTask = gameObject.AddComponent<StageCreateTask>();
         uiTask = gameObject.AddComponent<GameUiTask>();
         mapObjects = new List<MapObject>();
-        stageCreateTask.MapDataCreate(GetPath.Tutorial + "/Stage1", mapObjects, ref stageData);
+        stageCreateTask.MapDataCreate(GetPath.Txt + stageName, mapObjects, ref stageData);
         Special = new SpecialObject();
         textEvent = false;
         eventCount = 0;
