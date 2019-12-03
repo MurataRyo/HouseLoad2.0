@@ -41,6 +41,7 @@ public class ChoiceUi : MonoBehaviour
         gameTask.eventCount++;
         this.choiceGimmick = choiceGimmick;
         choiceMark.SetActive(true);
+        choiceMark.transform.localScale = Vector3.one;
         MarkPos(0);
         UiAdd();
     }
@@ -71,13 +72,14 @@ public class ChoiceUi : MonoBehaviour
             string message = flag[i] ? choiceGimmick.useBase.message[i] : choiceGimmick.useBase.noMessage[i];
             Vector2 pos = basePos - new Vector2(0f, uiInterval * i);
             text[i] = uiTask.NewTextUi(message, pos, color);
+            text[i].gameObject.transform.localScale = Vector3.one;
         }
     }
 
     //Markの座標指定     配列番号
     private void MarkPos(int num)
     {
-        choiceMark.transform.position = new Vector3(50f, 1005f - uiInterval * num, 0f);
+        choiceMark.transform.localPosition = new Vector3(-915f, 465f - uiInterval * num, 0f);
     }
 
     //テキストの消去
